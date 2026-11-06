@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package drivia;
+
+option java_multiple_files = true;
+option java_package = "dk.via.sep3.drivia.grpc";
+
+service LocationService {
+  rpc GetAllLocations (GetAllLocationsRequest) returns (LocationList);
+  rpc GetLocation (LocationIdRequest) returns (Location);
+  rpc AddLocation (AddLocationRequest) returns (Location);
+  rpc UpdateLocation (Location) returns (Location);
+  rpc DeleteLocation (LocationIdRequest) returns (DeleteLocationResponse);
+}
+
+message Location { int64 id = 1; string name = 2; string address = 3; }
+message GetAllLocationsRequest {}
+message LocationIdRequest { int64 id = 1; }
+message AddLocationRequest { string name = 1; string address = 2; }
+message LocationList { repeated Location locations = 1; }
+message DeleteLocationResponse {}
