@@ -2,6 +2,7 @@ package dk.via.sep3.drivia.tier2.vehicle.service;
 
 import dk.via.sep3.drivia.tier2.vehicle.dto.CarResponse;
 import dk.via.sep3.drivia.tier2.vehicle.grpc.CarDataClient;
+import dk.via.sep3.drivia.tier3.vehicle.entity.VehicleStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
