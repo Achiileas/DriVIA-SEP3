@@ -1,8 +1,5 @@
-package dk.via.sep3.drivia.tier2.vehicle.grpc;
+package dk.via.sep3.drivia.tier2.controller;
 
-import dk.via.sep3.drivia.grpc.GetAllVehiclesRequest;
-import dk.via.sep3.drivia.grpc.VehicleList;
-import dk.via.sep3.drivia.grpc.VehicleServiceGrpc;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

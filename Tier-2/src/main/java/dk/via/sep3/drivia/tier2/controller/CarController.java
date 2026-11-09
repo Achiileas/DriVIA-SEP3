@@ -1,7 +1,7 @@
-package dk.via.sep3.drivia.tier2.vehicle.controller;
+package dk.via.sep3.drivia.tier2.controller;
 
-import dk.via.sep3.drivia.tier2.vehicle.dto.CarResponse;
-import dk.via.sep3.drivia.tier2.vehicle.service.CarService;
+import dk.via.sep3.drivia.tier2.dto.CarResponse;
+import dk.via.sep3.drivia.tier2.service.CarService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier2.vehicle.dto;
+package dk.via.sep3.drivia.tier2.dto;
 
 import java.time.LocalDate;
 
