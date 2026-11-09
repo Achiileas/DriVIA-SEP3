@@ -39,8 +39,15 @@ public class Vehicle {
     protected Vehicle() {
     }
 
-    public Vehicle(String registrationNo, String model, LocalDate productionDate, int horsepower,
-                   String category, String gearbox, int pricePerDay, Location location) {
+    public Vehicle(String registrationNo,
+        String model,
+        LocalDate productionDate,
+        int horsepower,
+        String category,
+        String gearbox,
+        int pricePerDay,
+        Location location) {
+
         this.registrationNo = registrationNo;
         this.model = model;
         this.productionDate = productionDate;
