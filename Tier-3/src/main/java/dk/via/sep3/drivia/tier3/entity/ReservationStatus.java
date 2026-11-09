@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier3.reservation.entity;
+package dk.via.sep3.drivia.tier3.entity;
 
 import java.util.List;
 

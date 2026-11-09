@@ -1,6 +1,6 @@
-package dk.via.sep3.drivia.tier3.location.service;
+package dk.via.sep3.drivia.tier3.service;
 
-import dk.via.sep3.drivia.tier3.location.dto.LocationDTO;
+import dk.via.sep3.drivia.tier3.dto.LocationDTO;
 import java.util.List;
 
 public interface LocationService{

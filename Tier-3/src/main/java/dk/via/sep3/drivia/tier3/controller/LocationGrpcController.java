@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier3.location.controller;
+package dk.via.sep3.drivia.tier3.controller;
 
 import dk.via.sep3.drivia.grpc.AddLocationRequest;
 import dk.via.sep3.drivia.grpc.DeleteLocationResponse;
@@ -7,8 +7,8 @@ import dk.via.sep3.drivia.grpc.Location;
 import dk.via.sep3.drivia.grpc.LocationIdRequest;
 import dk.via.sep3.drivia.grpc.LocationList;
 import dk.via.sep3.drivia.grpc.LocationServiceGrpc;
-import dk.via.sep3.drivia.tier3.location.dto.LocationDTO;
-import dk.via.sep3.drivia.tier3.location.service.LocationService;
+import dk.via.sep3.drivia.tier3.dto.LocationDTO;
+import dk.via.sep3.drivia.tier3.service.LocationService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
 

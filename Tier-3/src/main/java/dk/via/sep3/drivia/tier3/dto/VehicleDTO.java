@@ -1,6 +1,6 @@
-package dk.via.sep3.drivia.tier3.vehicle.dto;
+package dk.via.sep3.drivia.tier3.dto;
 
-import dk.via.sep3.drivia.tier3.vehicle.entity.VehicleStatus;
+import dk.via.sep3.drivia.tier3.entity.VehicleStatus;
 import java.time.LocalDate;
 
 public record VehicleDTO(Long id,

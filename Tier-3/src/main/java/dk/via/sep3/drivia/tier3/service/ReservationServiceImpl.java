@@ -1,12 +1,12 @@
-package dk.via.sep3.drivia.tier3.reservation.service;
+package dk.via.sep3.drivia.tier3.service;
 
-import dk.via.sep3.drivia.tier3.reservation.dto.ReservationDTO;
-import dk.via.sep3.drivia.tier3.reservation.entity.Reservation;
-import dk.via.sep3.drivia.tier3.reservation.entity.ReservationStatus;
-import dk.via.sep3.drivia.tier3.reservation.repository.ReservationRepository;
-import dk.via.sep3.drivia.tier3.vehicle.entity.Vehicle;
-import dk.via.sep3.drivia.tier3.vehicle.entity.VehicleStatus;
-import dk.via.sep3.drivia.tier3.vehicle.repository.VehicleRepository;
+import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
+import dk.via.sep3.drivia.tier3.entity.Reservation;
+import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
+import dk.via.sep3.drivia.tier3.repository.ReservationRepository;
+import dk.via.sep3.drivia.tier3.entity.Vehicle;
+import dk.via.sep3.drivia.tier3.entity.VehicleStatus;
+import dk.via.sep3.drivia.tier3.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;

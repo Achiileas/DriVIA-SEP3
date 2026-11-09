@@ -1,7 +1,5 @@
-package dk.via.sep3.drivia.tier3.reservation.entity;
+package dk.via.sep3.drivia.tier3.entity;
 
-import dk.via.sep3.drivia.tier3.location.entity.Location;
-import dk.via.sep3.drivia.tier3.vehicle.entity.Vehicle;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

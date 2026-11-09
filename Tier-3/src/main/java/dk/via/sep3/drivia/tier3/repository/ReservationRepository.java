@@ -1,7 +1,7 @@
-package dk.via.sep3.drivia.tier3.reservation.repository;
+package dk.via.sep3.drivia.tier3.repository;
 
-import dk.via.sep3.drivia.tier3.reservation.entity.Reservation;
-import dk.via.sep3.drivia.tier3.reservation.entity.ReservationStatus;
+import dk.via.sep3.drivia.tier3.entity.Reservation;
+import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

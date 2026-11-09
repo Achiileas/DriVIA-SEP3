@@ -1,6 +1,6 @@
-package dk.via.sep3.drivia.tier3.reservation.service;
+package dk.via.sep3.drivia.tier3.service;
 
-import dk.via.sep3.drivia.tier3.reservation.dto.ReservationDTO;
+import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
 
 import java.time.LocalDate;
 import java.util.List;

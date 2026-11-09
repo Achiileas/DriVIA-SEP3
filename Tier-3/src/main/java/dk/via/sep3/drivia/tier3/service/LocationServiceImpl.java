@@ -1,10 +1,10 @@
-package dk.via.sep3.drivia.tier3.location.service;
+package dk.via.sep3.drivia.tier3.service;
 
-import dk.via.sep3.drivia.tier3.location.dto.LocationDTO;
-import dk.via.sep3.drivia.tier3.location.entity.Location;
-import dk.via.sep3.drivia.tier3.location.repository.LocationRepository;
-import dk.via.sep3.drivia.tier3.reservation.repository.ReservationRepository;
-import dk.via.sep3.drivia.tier3.vehicle.repository.VehicleRepository;
+import dk.via.sep3.drivia.tier3.dto.LocationDTO;
+import dk.via.sep3.drivia.tier3.entity.Location;
+import dk.via.sep3.drivia.tier3.repository.LocationRepository;
+import dk.via.sep3.drivia.tier3.repository.ReservationRepository;
+import dk.via.sep3.drivia.tier3.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class LocationServiceImpl implements LocationService{
+public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
     private final VehicleRepository vehicleRepository;
@@ -62,7 +62,7 @@ public class LocationServiceImpl implements LocationService{
     @Transactional
     public void deleteLocation(Long id){
         Location location = findLocation(id);
-        if (vehicleRepository.existsByLocationId(id)) {
+        if (vehicleRepository.existsByLocation_Id(id)) {
             throw new IllegalStateException("Location still has vehicles and cannot be deleted");
         }
         if (reservationRepository.existsByLocationId(id)) {

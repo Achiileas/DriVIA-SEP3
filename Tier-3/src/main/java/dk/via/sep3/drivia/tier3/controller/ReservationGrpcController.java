@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier3.reservation.controller;
+package dk.via.sep3.drivia.tier3.controller;
 
 import dk.via.sep3.drivia.grpc.CreateReservationRequest;
 import dk.via.sep3.drivia.grpc.CustomerIdRequest;
@@ -8,8 +8,8 @@ import dk.via.sep3.drivia.grpc.Reservation;
 import dk.via.sep3.drivia.grpc.ReservationIdRequest;
 import dk.via.sep3.drivia.grpc.ReservationList;
 import dk.via.sep3.drivia.grpc.ReservationServiceGrpc;
-import dk.via.sep3.drivia.tier3.reservation.dto.ReservationDTO;
-import dk.via.sep3.drivia.tier3.reservation.service.ReservationService;
+import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
+import dk.via.sep3.drivia.tier3.service.ReservationService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
 

@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier3.vehicle.entity;
+package dk.via.sep3.drivia.tier3.entity;
 
 public enum VehicleStatus {
     AVAILABLE,   // at the location, can be rented
