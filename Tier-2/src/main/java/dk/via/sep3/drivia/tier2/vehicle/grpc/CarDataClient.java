@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier2.grpc;
+package dk.via.sep3.drivia.tier2.vehicle.grpc;
 
 import dk.via.sep3.drivia.grpc.GetAllVehiclesRequest;
 import dk.via.sep3.drivia.grpc.VehicleList;

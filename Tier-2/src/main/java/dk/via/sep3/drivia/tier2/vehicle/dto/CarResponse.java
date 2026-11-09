@@ -1,4 +1,4 @@
-package dk.via.sep3.drivia.tier2.dto;
+package dk.via.sep3.drivia.tier2.vehicle.dto;
 
 import dk.via.sep3.drivia.tier3.vehicle.entity.VehicleStatus;
 
