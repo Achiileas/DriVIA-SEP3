@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package drivia;
+
+option java_multiple_files = true;
+option java_package = "dk.via.sep3.drivia.grpc";
+
+service VehicleService {
+  rpc GetAllVehicles (GetAllVehiclesRequest) returns (VehicleList);          // PB-12 browse
+  rpc GetVehicle (VehicleIdRequest) returns (Vehicle);                       // PB-13 details
+  rpc SearchVehicles (SearchVehiclesRequest) returns (VehicleList);          // PB-15 search/filter
+  rpc GetAvailableVehicles (AvailabilityRequest) returns (VehicleList);      // PB-14 availability
+  rpc AddVehicle (AddVehicleRequest) returns (Vehicle);                      // PB-08
+  rpc UpdateVehicle (Vehicle) returns (Vehicle);                             // PB-09
+  rpc UpdateVehicleStatus (UpdateVehicleStatusRequest) returns (Vehicle);    // manage status
+  rpc RemoveVehicle (VehicleIdRequest) returns (RemoveVehicleResponse);      // PB-11
+}
+
+// Dates are strings in the format yyyy-MM-dd
+message Vehicle {
+  int64 id = 1;
+  string registration_no = 2;
+  string model = 3;
+  string production_date = 4;
+  int32 horsepower = 5;
+  string category = 6;
+  string gearbox = 7;
+  int32 price_per_day = 8;
+  string status = 9;
+  int64 location_id = 10;
+  string location_name = 11;
+}
+
+message GetAllVehiclesRequest {}
+message VehicleIdRequest { int64 id = 1; }
+
+// Empty string or 0 means "no filter"
+message SearchVehiclesRequest { string model = 1; string category = 2; string gearbox = 3; int64 location_id = 4; }
+
+message AvailabilityRequest { int64 location_id = 1; string pickup_date = 2; string return_date = 3; }
+
+message AddVehicleRequest {
+  string registration_no = 1; string model = 2; string production_date = 3; int32 horsepower = 4;
+  string category = 5; string gearbox = 6; int32 price_per_day = 7; int64 location_id = 8;
+}
+
+message UpdateVehicleStatusRequest { int64 id = 1; string status = 2; }
+message VehicleList { repeated Vehicle vehicles = 1; }
+message RemoveVehicleResponse {}
