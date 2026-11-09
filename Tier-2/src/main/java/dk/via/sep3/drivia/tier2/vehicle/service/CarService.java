@@ -1,7 +1,7 @@
-package dk.via.sep3.drivia.tier2.service;
+package dk.via.sep3.drivia.tier2.vehicle.service;
 
-import dk.via.sep3.drivia.tier2.dto.CarResponse;
-import dk.via.sep3.drivia.tier2.grpc.CarDataClient;
+import dk.via.sep3.drivia.tier2.vehicle.dto.CarResponse;
+import dk.via.sep3.drivia.tier2.vehicle.grpc.CarDataClient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
