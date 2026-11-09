@@ -1,0 +1,7 @@
+dk/via/sep3/drivia/tier3/location/service/LocationService.class
+dk/via/sep3/drivia/tier3/Tier3Application.class
+dk/via/sep3/drivia/tier3/location/controller/LocationGrpcController.class
+dk/via/sep3/drivia/tier3/location/entity/Location.class
+dk/via/sep3/drivia/tier3/common/GrpcErrors.class
+dk/via/sep3/drivia/tier3/location/dto/LocationDTO.class
+dk/via/sep3/drivia/tier3/location/repository/LocationRepository.class

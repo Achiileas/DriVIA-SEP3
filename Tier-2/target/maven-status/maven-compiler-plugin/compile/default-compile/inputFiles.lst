@@ -1,0 +1,6 @@
+/Users/Marek/Desktop/VIA/3X/SEP3/DriVIA-SEP3-devs/Tier-2/src/main/java/dk/via/sep3/drivia/tier2/DriVIAServerApplication.java
+/Users/Marek/Desktop/VIA/3X/SEP3/DriVIA-SEP3-devs/Tier-2/src/main/java/dk/via/sep3/drivia/tier2/controller/CarController.java
+/Users/Marek/Desktop/VIA/3X/SEP3/DriVIA-SEP3-devs/Tier-2/src/main/java/dk/via/sep3/drivia/tier2/dto/CarResponse.java
+/Users/Marek/Desktop/VIA/3X/SEP3/DriVIA-SEP3-devs/Tier-2/src/main/java/dk/via/sep3/drivia/tier2/grpc/CarDataClient.java
+/Users/Marek/Desktop/VIA/3X/SEP3/DriVIA-SEP3-devs/Tier-2/src/main/java/dk/via/sep3/drivia/tier2/model/Car.java
+/Users/Marek/Desktop/VIA/3X/SEP3/DriVIA-SEP3-devs/Tier-2/src/main/java/dk/via/sep3/drivia/tier2/service/CarService.java

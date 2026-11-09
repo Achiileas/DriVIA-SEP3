@@ -1,0 +1,6 @@
+dk/via/sep3/drivia/tier2/model/Car.class
+dk/via/sep3/drivia/tier2/DriVIAServerApplication.class
+dk/via/sep3/drivia/tier2/grpc/CarDataClient.class
+dk/via/sep3/drivia/tier2/controller/CarController.class
+dk/via/sep3/drivia/tier2/dto/CarResponse.class
+dk/via/sep3/drivia/tier2/service/CarService.class
