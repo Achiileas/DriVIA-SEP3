@@ -19,14 +19,14 @@ service ReservationService {
 
 // Dates are strings in the format yyyy-MM-dd
 message Reservation {
-  int64 id = 1; int64 customer_id = 2; int64 vehicle_id = 3; string vehicle_model = 4;
-  int64 location_id = 5; string location_name = 6; string pickup_date = 7; string return_date = 8;
+  int32 id = 1; int32 customer_id = 2; int32 vehicle_id = 3; string vehicle_model = 4;
+  int32 location_id = 5; string location_name = 6; string pickup_date = 7; string return_date = 8;
   string status = 9; int32 total_price = 10;
 }
 
-message CreateReservationRequest { int64 customer_id = 1; int64 vehicle_id = 2; string pickup_date = 3; string return_date = 4; }
-message ModifyReservationRequest { int64 id = 1; int64 vehicle_id = 2; string pickup_date = 3; string return_date = 4; }
-message ReservationIdRequest { int64 id = 1; }
-message CustomerIdRequest { int64 customer_id = 1; }
+message CreateReservationRequest { int32 customer_id = 1; int32 vehicle_id = 2; string pickup_date = 3; string return_date = 4; }
+message ModifyReservationRequest { int32 id = 1; int32 vehicle_id = 2; string pickup_date = 3; string return_date = 4; }
+message ReservationIdRequest { int32 id = 1; }
+message CustomerIdRequest { int32 customer_id = 1; }
 message GetAllReservationsRequest {}
 message ReservationList { repeated Reservation reservations = 1; }

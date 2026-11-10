@@ -3,7 +3,7 @@ package dk.via.sep3.drivia.tier2.dto;
 import java.time.LocalDate;
 
 public record CarResponse(
-        long id,
+        int id,
         String registrationNo,
         String model,
         LocalDate productionDate,
@@ -12,7 +12,7 @@ public record CarResponse(
         String gearbox,
         int pricePerDay,
         String status,
-        Long locationId,
+        int locationId,
         String locationName
 ) {
 }

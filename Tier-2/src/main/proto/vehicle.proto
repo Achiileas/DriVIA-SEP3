@@ -18,7 +18,7 @@ service VehicleService {
 
 // Dates are strings in the format yyyy-MM-dd
 message Vehicle {
-  int64 id = 1;
+  int32 id = 1;
   string registration_no = 2;
   string model = 3;
   string production_date = 4;
@@ -27,23 +27,23 @@ message Vehicle {
   string gearbox = 7;
   int32 price_per_day = 8;
   string status = 9;
-  int64 location_id = 10;
+  int32 location_id = 10;
   string location_name = 11;
 }
 
 message GetAllVehiclesRequest {}
-message VehicleIdRequest { int64 id = 1; }
+message VehicleIdRequest { int32 id = 1; }
 
 // Empty string or 0 means "no filter"
-message SearchVehiclesRequest { string model = 1; string category = 2; string gearbox = 3; int64 location_id = 4; }
+message SearchVehiclesRequest { string model = 1; string category = 2; string gearbox = 3; int32 location_id = 4; }
 
-message AvailabilityRequest { int64 location_id = 1; string pickup_date = 2; string return_date = 3; }
+message AvailabilityRequest { int32 location_id = 1; string pickup_date = 2; string return_date = 3; }
 
 message AddVehicleRequest {
   string registration_no = 1; string model = 2; string production_date = 3; int32 horsepower = 4;
-  string category = 5; string gearbox = 6; int32 price_per_day = 7; int64 location_id = 8;
+  string category = 5; string gearbox = 6; int32 price_per_day = 7; int32 location_id = 8;
 }
 
-message UpdateVehicleStatusRequest { int64 id = 1; string status = 2; }
+message UpdateVehicleStatusRequest { int32 id = 1; string status = 2; }
 message VehicleList { repeated Vehicle vehicles = 1; }
 message RemoveVehicleResponse {}

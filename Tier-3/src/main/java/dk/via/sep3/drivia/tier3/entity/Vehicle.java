@@ -18,7 +18,7 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String registrationNo;
     private String model;
     private LocalDate productionDate;
@@ -63,7 +63,7 @@ public class Vehicle {
         return status == VehicleStatus.AVAILABLE || status == VehicleStatus.RENTED;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

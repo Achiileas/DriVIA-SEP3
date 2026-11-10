@@ -3,7 +3,7 @@ package dk.via.sep3.drivia.tier3.dto;
 import dk.via.sep3.drivia.tier3.entity.VehicleStatus;
 import java.time.LocalDate;
 
-public record VehicleDTO(Long id,
+public record VehicleDTO(int id,
                          String registrationNo,
                          String model,
                          LocalDate productionDate,
@@ -12,6 +12,6 @@ public record VehicleDTO(Long id,
                          String gearbox,
                          int pricePerDay,
                          VehicleStatus status,
-                         Long locationId,
+                         int locationId,
                          String locationName) {
 }

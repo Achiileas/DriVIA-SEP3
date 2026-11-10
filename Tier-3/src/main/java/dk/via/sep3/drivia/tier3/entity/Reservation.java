@@ -18,10 +18,10 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     // Plain id until the group decides how users are stored
-    private Long customerId;
+    private int customerId;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
@@ -43,7 +43,7 @@ public class Reservation {
     protected Reservation() {
     }
 
-    public Reservation(Long customerId, Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate, int totalPrice) {
+    public Reservation(int customerId, Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate, int totalPrice) {
         this.customerId = customerId;
         this.vehicle = vehicle;
         this.location = vehicle.getLocation();
@@ -53,11 +53,11 @@ public class Reservation {
         this.status = ReservationStatus.PENDING;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public Long getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 

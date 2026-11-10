@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface LocationService{
     List<LocationDTO> getAllLocations();
-    LocationDTO getLocation(Long id);
+    LocationDTO getLocation(int id);
     LocationDTO addLocation(LocationDTO location);
     LocationDTO updateLocation(LocationDTO location);
-    void deleteLocation(Long id);
+    void deleteLocation(int id);
 }

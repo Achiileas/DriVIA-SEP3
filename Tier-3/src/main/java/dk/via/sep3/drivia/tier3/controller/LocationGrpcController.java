@@ -52,7 +52,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
     public void addLocation(AddLocationRequest request, StreamObserver<Location> responseObserver) {
         try {
             LocationDTO dto = locationService.addLocation(
-                    new LocationDTO(null, request.getName(), request.getAddress()));
+                    new LocationDTO(0, request.getName(), request.getAddress()));
             responseObserver.onNext(toProto(dto));
             responseObserver.onCompleted();
         } catch (Exception e) {

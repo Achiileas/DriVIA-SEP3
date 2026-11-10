@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 public class ReservationServiceImpl implements ReservationService {
 
     // Used as excludeId when there is no existing reservation to skip . Make it int
-    private static final long NO_RESERVATION = 0L;
+    private static final int NO_RESERVATION = 0;
 
     private final ReservationRepository reservationRepository;
     private final VehicleRepository vehicleRepository;
@@ -32,7 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
     // Everything in this method is one transaction: it is saved completely or not at all
     @Override
     @Transactional
-    public ReservationDTO createReservation(Long customerId, Long vehicleId, LocalDate pickupDate, LocalDate returnDate) {
+    public ReservationDTO createReservation(int customerId, int vehicleId, LocalDate pickupDate, LocalDate returnDate) {
         validateDates(pickupDate, returnDate);
         Vehicle vehicle = lockVehicle(vehicleId);
         checkVehicleIsFree(vehicle, NO_RESERVATION, pickupDate, returnDate);
@@ -44,7 +44,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional(readOnly = true)
-    public ReservationDTO getReservation(Long id) {
+    public ReservationDTO getReservation(int id) {
         return toDTO(findReservation(id));
     }
 
@@ -58,7 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ReservationDTO> getCustomerReservations(Long customerId) {
+    public List<ReservationDTO> getCustomerReservations(int customerId) {
         return reservationRepository.findByCustomerIdOrderByPickupDateDesc(customerId).stream()
                 .map(this::toDTO)
                 .toList();
@@ -66,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public ReservationDTO modifyReservation(Long id, Long vehicleId, LocalDate pickupDate, LocalDate returnDate) {
+    public ReservationDTO modifyReservation(int id, int vehicleId, LocalDate pickupDate, LocalDate returnDate) {
         Reservation reservation = findReservation(id);
         if (reservation.getStatus() != ReservationStatus.PENDING
                 && reservation.getStatus() != ReservationStatus.APPROVED) {
@@ -86,7 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public ReservationDTO cancelReservation(Long id) {
+    public ReservationDTO cancelReservation(int id) {
         Reservation reservation = findReservation(id);
         if (reservation.getStatus() != ReservationStatus.PENDING
                 && reservation.getStatus() != ReservationStatus.APPROVED) {
@@ -98,7 +98,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public ReservationDTO approveReservation(Long id) {
+    public ReservationDTO approveReservation(int id) {
         Reservation reservation = findReservation(id);
         checkStatus(reservation, ReservationStatus.PENDING);
         reservation.setStatus(ReservationStatus.APPROVED);
@@ -107,7 +107,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public ReservationDTO pickupReservation(Long id) {
+    public ReservationDTO pickupReservation(int id) {
         Reservation reservation = findReservation(id);
         checkStatus(reservation, ReservationStatus.APPROVED);
         if (LocalDate.now().isBefore(reservation.getPickupDate())) {
@@ -120,7 +120,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public ReservationDTO returnReservation(Long id) {
+    public ReservationDTO returnReservation(int id) {
         Reservation reservation = findReservation(id);
         checkStatus(reservation, ReservationStatus.ACTIVE);
         reservation.setStatus(ReservationStatus.COMPLETED);
@@ -128,12 +128,12 @@ public class ReservationServiceImpl implements ReservationService {
         return toDTO(reservationRepository.save(reservation));
     }
 
-    private Vehicle lockVehicle(Long vehicleId) {
+    private Vehicle lockVehicle(int vehicleId) {
         return vehicleRepository.findByIdForUpdate(vehicleId)
                 .orElseThrow(() -> new NoSuchElementException("Vehicle " + vehicleId + " not found"));
     }
 
-    private void checkVehicleIsFree(Vehicle vehicle, Long excludeId, LocalDate pickupDate, LocalDate returnDate) {
+    private void checkVehicleIsFree(Vehicle vehicle, int excludeId, LocalDate pickupDate, LocalDate returnDate) {
         if (!vehicle.canBeReserved()) {
             throw new IllegalStateException("Vehicle " + vehicle.getId() + " cannot be reserved");
         }
@@ -159,11 +159,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private int calculatePrice(Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate) {
-        long days = ChronoUnit.DAYS.between(pickupDate, returnDate);
-        return (int) days * vehicle.getPricePerDay();
+        int days = (int) ChronoUnit.DAYS.between(pickupDate, returnDate);
+        return days * vehicle.getPricePerDay();
     }
 
-    private Reservation findReservation(Long id) {
+    private Reservation findReservation(int id) {
         return reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Reservation " + id + " not found"));
     }

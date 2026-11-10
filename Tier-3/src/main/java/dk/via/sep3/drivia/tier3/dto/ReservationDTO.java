@@ -4,11 +4,11 @@ import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
 
 import java.time.LocalDate;
 
-public record ReservationDTO(Long id,
-                             Long customerId,
-                             Long vehicleId,
+public record ReservationDTO(int id,
+                             int customerId,
+                             int vehicleId,
                              String vehicleModel,
-                             Long locationId,
+                             int locationId,
                              String locationName,
                              LocalDate pickupDate,
                              LocalDate returnDate,

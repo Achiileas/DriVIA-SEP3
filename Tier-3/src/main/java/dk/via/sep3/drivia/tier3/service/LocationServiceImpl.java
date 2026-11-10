@@ -7,7 +7,6 @@ import dk.via.sep3.drivia.tier3.repository.ReservationRepository;
 import dk.via.sep3.drivia.tier3.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,7 +35,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional(readOnly = true)
-    public LocationDTO getLocation(Long id){
+    public LocationDTO getLocation(int id){
         return toDTO(findLocation(id));
     }
 
@@ -60,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public void deleteLocation(Long id){
+    public void deleteLocation(int id){
         Location location = findLocation(id);
         if (vehicleRepository.existsByLocation_Id(id)) {
             throw new IllegalStateException("Location still has vehicles and cannot be deleted");
@@ -71,7 +70,7 @@ public class LocationServiceImpl implements LocationService {
         locationRepository.delete(location);
     }
 
-    private Location findLocation(Long id){
+    private Location findLocation(int id){
         return locationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Location " + id + " not found"));
     }

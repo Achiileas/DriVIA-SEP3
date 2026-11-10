@@ -7,21 +7,21 @@ import java.util.List;
 
 public interface ReservationService {
 
-    ReservationDTO createReservation(Long customerId, Long vehicleId, LocalDate pickupDate, LocalDate returnDate);
+    ReservationDTO createReservation(int customerId, int vehicleId, LocalDate pickupDate, LocalDate returnDate);
 
-    ReservationDTO getReservation(Long id);
+    ReservationDTO getReservation(int id);
 
     List<ReservationDTO> getAllReservations();
 
-    List<ReservationDTO> getCustomerReservations(Long customerId);
+    List<ReservationDTO> getCustomerReservations(int customerId);
 
-    ReservationDTO modifyReservation(Long id, Long vehicleId, LocalDate pickupDate, LocalDate returnDate);
+    ReservationDTO modifyReservation(int id, int vehicleId, LocalDate pickupDate, LocalDate returnDate);
 
-    ReservationDTO cancelReservation(Long id);
+    ReservationDTO cancelReservation(int id);
 
-    ReservationDTO approveReservation(Long id);
+    ReservationDTO approveReservation(int id);
 
-    ReservationDTO pickupReservation(Long id);
+    ReservationDTO pickupReservation(int id);
 
-    ReservationDTO returnReservation(Long id);
+    ReservationDTO returnReservation(int id);
 }

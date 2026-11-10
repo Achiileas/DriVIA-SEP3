@@ -9,15 +9,15 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
     List<Reservation> findAllByOrderByPickupDateDesc();
 
-    List<Reservation> findByCustomerIdOrderByPickupDateDesc(Long customerId);
+    List<Reservation> findByCustomerIdOrderByPickupDateDesc(int customerId);
 
-    boolean existsByVehicleIdAndStatusIn(Long vehicleId, Collection<ReservationStatus> statuses);
+    boolean existsByVehicleIdAndStatusIn(int vehicleId, Collection<ReservationStatus> statuses);
 
-    boolean existsByLocationId(Long locationId);
+    boolean existsByLocationId(int locationId);
 
     // Is the vehicle already booked in this period? excludeId skips the reservation being modified
     @Query("""
@@ -28,8 +28,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
               AND r.pickupDate < :returnDate
               AND r.returnDate > :pickupDate
             """)
-    boolean existsOverlapping(Long vehicleId,
-                              Long excludeId,
+    boolean existsOverlapping(int vehicleId,
+                              int excludeId,
                               LocalDate pickupDate,
                               LocalDate returnDate,
                               Collection<ReservationStatus> statuses);
