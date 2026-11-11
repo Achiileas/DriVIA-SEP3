@@ -12,23 +12,22 @@ import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
 import dk.via.sep3.drivia.tier3.service.ReservationService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
-
 import java.time.LocalDate;
 import java.util.List;
 
 import static dk.via.sep3.drivia.tier3.common.GrpcErrors.toGrpcError;
 
 @GrpcService
-public class ReservationGrpcController extends ReservationServiceGrpc.ReservationServiceImplBase {
+public class ReservationGrpcController extends ReservationServiceGrpc.ReservationServiceImplBase{
 
     private final ReservationService reservationService;
 
-    public ReservationGrpcController(ReservationService reservationService) {
+    public ReservationGrpcController( ReservationService reservationService ){
         this.reservationService = reservationService;
     }
 
     @Override
-    public void createReservation(CreateReservationRequest request, StreamObserver<Reservation> responseObserver) {
+    public void createReservation( CreateReservationRequest request, StreamObserver<Reservation> responseObserver) {
         try {
             ReservationDTO dto = reservationService.createReservation(
                     request.getCustomerId(),
@@ -43,7 +42,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
     }
 
     @Override
-    public void getReservation(ReservationIdRequest request, StreamObserver<Reservation> responseObserver) {
+    public void getReservation( ReservationIdRequest request, StreamObserver<Reservation> responseObserver) {
         try {
             responseObserver.onNext(toProto(reservationService.getReservation(request.getId())));
             responseObserver.onCompleted();
@@ -53,7 +52,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
     }
 
     @Override
-    public void getAllReservations(GetAllReservationsRequest request, StreamObserver<ReservationList> responseObserver) {
+    public void getAllReservations( GetAllReservationsRequest request, StreamObserver<ReservationList> responseObserver) {
         try {
             responseObserver.onNext(toProtoList(reservationService.getAllReservations()));
             responseObserver.onCompleted();
@@ -63,7 +62,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
     }
 
     @Override
-    public void getCustomerReservations(CustomerIdRequest request, StreamObserver<ReservationList> responseObserver) {
+    public void getCustomerReservations( CustomerIdRequest request, StreamObserver<ReservationList> responseObserver) {
         try {
             responseObserver.onNext(toProtoList(reservationService.getCustomerReservations(request.getCustomerId())));
             responseObserver.onCompleted();
@@ -73,7 +72,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
     }
 
     @Override
-    public void modifyReservation(ModifyReservationRequest request, StreamObserver<Reservation> responseObserver) {
+    public void modifyReservation( ModifyReservationRequest request, StreamObserver<Reservation> responseObserver) {
         try {
             ReservationDTO dto = reservationService.modifyReservation(
                     request.getId(),
@@ -88,7 +87,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
     }
 
     @Override
-    public void cancelReservation(ReservationIdRequest request, StreamObserver<Reservation> responseObserver) {
+    public void cancelReservation( ReservationIdRequest request, StreamObserver<Reservation> responseObserver) {
         try {
             responseObserver.onNext(toProto(reservationService.cancelReservation(request.getId())));
             responseObserver.onCompleted();
@@ -108,7 +107,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
     }
 
     @Override
-    public void pickupReservation(ReservationIdRequest request, StreamObserver<Reservation> responseObserver) {
+    public void pickupReservation( ReservationIdRequest request, StreamObserver<Reservation> responseObserver) {
         try {
             responseObserver.onNext(toProto(reservationService.pickupReservation(request.getId())));
             responseObserver.onCompleted();
@@ -127,7 +126,7 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
         }
     }
 
-    private Reservation toProto(ReservationDTO dto) {
+    private Reservation toProto( ReservationDTO dto ){
         return Reservation.newBuilder()
                 .setId(dto.id())
                 .setCustomerId(dto.customerId())
@@ -142,9 +141,9 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
                 .build();
     }
 
-    private ReservationList toProtoList(List<ReservationDTO> dtos) {
+    private ReservationList toProtoList( List<ReservationDTO> dtos ){
         ReservationList.Builder list = ReservationList.newBuilder();
-        for (ReservationDTO dto : dtos) {
+        for ( ReservationDTO dto : dtos ){
             list.addReservations(toProto(dto));
         }
         return list.build();

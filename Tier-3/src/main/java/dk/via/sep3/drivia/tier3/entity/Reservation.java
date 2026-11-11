@@ -13,8 +13,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "reservation")
-public class Reservation {
+@Table( name = "reservation" )
+public class Reservation{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +24,11 @@ public class Reservation {
     private int customerId;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_id")
+    @JoinColumn( name = "vehicle_id" )
     private Vehicle vehicle;
 
     @ManyToOne
-    @JoinColumn(name = "location_id")
+    @JoinColumn( name = "location_id" )
     private Location location;
 
     private LocalDate pickupDate;
@@ -40,10 +40,10 @@ public class Reservation {
     private int totalPrice;
 
     // JPA needs an empty constructor
-    protected Reservation() {
+    protected Reservation(){
     }
 
-    public Reservation(int customerId, Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate, int totalPrice) {
+    public Reservation( int customerId, Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate, int totalPrice ){
         this.customerId = customerId;
         this.vehicle = vehicle;
         this.location = vehicle.getLocation();
@@ -65,7 +65,7 @@ public class Reservation {
         return vehicle;
     }
 
-    public void setVehicle(Vehicle vehicle) {
+    public void setVehicle( Vehicle vehicle ){
         this.vehicle = vehicle;
         this.location = vehicle.getLocation();
     }

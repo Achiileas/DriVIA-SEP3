@@ -17,16 +17,16 @@ public class Location{
     protected Location(){
         }
 
-        public Location(String name, String address) {
+        public Location( String name, String address ){
             this.name = name;
             this.address = address;
         }
 
-    public int getId() {
+    public int getId(){
         return id;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
     }
 

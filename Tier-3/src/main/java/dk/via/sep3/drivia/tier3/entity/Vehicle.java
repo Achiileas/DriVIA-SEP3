@@ -9,12 +9,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "vehicle")
-public class Vehicle {
+public class Vehicle{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,21 +30,15 @@ public class Vehicle {
     private VehicleStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "location_id")
+    @JoinColumn( name = "location_id" )
     private Location location;
 
     // JPA needs an empty constructor
-    protected Vehicle() {
+    protected Vehicle(){
     }
 
-    public Vehicle(String registrationNo,
-        String model,
-        LocalDate productionDate,
-        int horsepower,
-        String category,
-        String gearbox,
-        int pricePerDay,
-        Location location) {
+    public Vehicle( String registrationNo, String model, LocalDate productionDate,
+        int horsepower, String category, String gearbox, int pricePerDay, Location location ){
 
         this.registrationNo = registrationNo;
         this.model = model;

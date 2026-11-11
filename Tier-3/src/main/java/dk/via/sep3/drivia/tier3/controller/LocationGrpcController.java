@@ -11,11 +11,10 @@ import dk.via.sep3.drivia.tier3.dto.LocationDTO;
 import dk.via.sep3.drivia.tier3.service.LocationService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
-
 import static dk.via.sep3.drivia.tier3.common.GrpcErrors.toGrpcError;
 
 @GrpcService
-public class LocationGrpcController extends LocationServiceGrpc.LocationServiceImplBase {
+public class LocationGrpcController extends LocationServiceGrpc.LocationServiceImplBase{
 
     private final LocationService locationService;
 
@@ -24,7 +23,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
     }
 
     @Override
-    public void getAllLocations( GetAllLocationsRequest request, StreamObserver<LocationList> responseObserver) {
+    public void getAllLocations( GetAllLocationsRequest request, StreamObserver<LocationList> responseObserver){
         try {
             LocationList.Builder list = LocationList.newBuilder();
             for (LocationDTO dto : locationService.getAllLocations()) {
@@ -38,7 +37,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
     }
 
     @Override
-    public void getLocation( LocationIdRequest request, StreamObserver<Location> responseObserver) {
+    public void getLocation( LocationIdRequest request, StreamObserver<Location> responseObserver){
         try {
             LocationDTO dto = locationService.getLocation(request.getId());
             responseObserver.onNext(toProto(dto));
@@ -49,7 +48,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
     }
 
     @Override
-    public void addLocation(AddLocationRequest request, StreamObserver<Location> responseObserver) {
+    public void addLocation( AddLocationRequest request, StreamObserver<Location> responseObserver){
         try {
             LocationDTO dto = locationService.addLocation(
                     new LocationDTO(0, request.getName(), request.getAddress()));
@@ -61,7 +60,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
     }
 
     @Override
-    public void updateLocation(Location request, StreamObserver<Location> responseObserver) {
+    public void updateLocation( Location request, StreamObserver<Location> responseObserver){
         try {
             LocationDTO dto = locationService.updateLocation(
                     new LocationDTO(request.getId(), request.getName(), request.getAddress()));
@@ -73,7 +72,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
     }
 
     @Override
-    public void deleteLocation( LocationIdRequest request, StreamObserver<DeleteLocationResponse> responseObserver) {
+    public void deleteLocation( LocationIdRequest request, StreamObserver<DeleteLocationResponse> responseObserver){
         try {
             locationService.deleteLocation(request.getId());
             responseObserver.onNext(DeleteLocationResponse.newBuilder().build());
@@ -83,7 +82,7 @@ public class LocationGrpcController extends LocationServiceGrpc.LocationServiceI
         }
     }
 
-    private Location toProto(LocationDTO dto){
+    private Location toProto( LocationDTO dto ){
         return Location.newBuilder()
                 .setId(dto.id())
                 .setName(dto.name())

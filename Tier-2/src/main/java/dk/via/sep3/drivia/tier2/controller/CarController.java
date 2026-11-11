@@ -2,25 +2,35 @@ package dk.via.sep3.drivia.tier2.controller;
 
 import dk.via.sep3.drivia.tier2.dto.CarResponse;
 import dk.via.sep3.drivia.tier2.service.CarService;
-
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/cars")
-public class CarController {
+public class CarController{
 
   private final CarService carService;
 
-  public CarController(CarService carService) {
+  public CarController( CarService carService ){
     this.carService = carService;
   }
 
   @GetMapping
-  public List<CarResponse> getAllCars() {
-    return carService.getAllCars();
+  public ResponseEntity<List<CarResponse>> getAllCars(){
+    try {
+      return ResponseEntity.ok(carService.getAllCars());
+    } catch (StatusRuntimeException e){
+      // UNAVAILABLE means Tier 3 is not running or cannot be reached
+      if ( e.getStatus().getCode() == Status.Code.UNAVAILABLE ){
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+      }
+      return ResponseEntity.internalServerError().build();
+    }
   }
 }

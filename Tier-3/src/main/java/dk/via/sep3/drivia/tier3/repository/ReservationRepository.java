@@ -4,12 +4,11 @@ import dk.via.sep3.drivia.tier3.entity.Reservation;
 import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+public interface ReservationRepository extends JpaRepository<Reservation, Integer>{
 
     List<Reservation> findAllByOrderByPickupDateDesc();
 

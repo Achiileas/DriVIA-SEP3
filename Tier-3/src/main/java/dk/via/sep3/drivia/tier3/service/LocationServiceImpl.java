@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class LocationServiceImpl implements LocationService {
+public class LocationServiceImpl implements LocationService{
 
     private final LocationRepository locationRepository;
     private final VehicleRepository vehicleRepository;
     private final ReservationRepository reservationRepository;
 
-    public LocationServiceImpl( LocationRepository locationRepository,
-                               VehicleRepository vehicleRepository,
-                               ReservationRepository reservationRepository) {
+    public LocationServiceImpl( LocationRepository locationRepository, VehicleRepository vehicleRepository,
+                               ReservationRepository reservationRepository ){
+
         this.locationRepository = locationRepository;
         this.vehicleRepository = vehicleRepository;
         this.reservationRepository = reservationRepository;
@@ -34,14 +34,14 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public LocationDTO getLocation(int id){
+    @Transactional( readOnly = true )
+    public LocationDTO getLocation( int id ){
         return toDTO(findLocation(id));
     }
 
     @Override
     @Transactional
-    public LocationDTO addLocation(LocationDTO dto){
+    public LocationDTO addLocation( LocationDTO dto ){
         validate(dto);
         Location saved = locationRepository.save(new Location(dto.name(), dto.address()));
         return toDTO(saved);
@@ -49,7 +49,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public LocationDTO updateLocation(LocationDTO dto){
+    public LocationDTO updateLocation( LocationDTO dto ){
         validate(dto);
         Location location = findLocation(dto.id());
         location.setName(dto.name());
@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public void deleteLocation(int id){
+    public void deleteLocation( int id ){
         Location location = findLocation(id);
         if (vehicleRepository.existsByLocation_Id(id)) {
             throw new IllegalStateException("Location still has vehicles and cannot be deleted");
@@ -70,21 +70,21 @@ public class LocationServiceImpl implements LocationService {
         locationRepository.delete(location);
     }
 
-    private Location findLocation(int id){
+    private Location findLocation( int id ){
         return locationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Location " + id + " not found"));
     }
 
-    private void validate(LocationDTO dto){
-        if (dto.name() == null || dto.name().isBlank()) {
+    private void validate( LocationDTO dto ){
+        if ( dto.name() == null || dto.name().isBlank()) {
             throw new IllegalArgumentException("Location name is required");
         }
-        if (dto.address() == null || dto.address().isBlank()) {
+        if ( dto.address() == null || dto.address().isBlank()) {
             throw new IllegalArgumentException("Location address is required");
         }
     }
 
-    private LocationDTO toDTO(Location location){
+    private LocationDTO toDTO( Location location ){
         return new LocationDTO(location.getId(), location.getName(), location.getAddress());
     }
 }
