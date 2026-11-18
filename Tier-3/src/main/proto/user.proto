@@ -6,8 +6,8 @@ option java_multiple_files = true;
 option java_package = "dk.via.sep3.drivia.grpc";
 
 service UserService {
-  rpc Register (RegisterRequest) returns (User);   // PB-04 register as customer
-  rpc Login (LoginRequest) returns (User);         // PB-05, PB-06 log in
+  rpc Register (RegisterRequest) returns (User);
+  rpc Login (LoginRequest) returns (User);
   rpc GetUser (UserIdRequest) returns (User);
 }
 
