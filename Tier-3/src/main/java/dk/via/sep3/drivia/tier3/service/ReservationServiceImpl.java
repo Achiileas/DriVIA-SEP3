@@ -1,6 +1,8 @@
 package dk.via.sep3.drivia.tier3.service;
 
 import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
+import dk.via.sep3.drivia.tier3.entity.Customer;
+import dk.via.sep3.drivia.tier3.repository.CustomerRepository;
 import dk.via.sep3.drivia.tier3.entity.Reservation;
 import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
 import dk.via.sep3.drivia.tier3.repository.ReservationRepository;
@@ -22,10 +24,13 @@ public class ReservationServiceImpl implements ReservationService{
 
     private final ReservationRepository reservationRepository;
     private final VehicleRepository vehicleRepository;
+    private final CustomerRepository customerRepository;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, VehicleRepository vehicleRepository){
+    public ReservationServiceImpl(ReservationRepository reservationRepository, VehicleRepository vehicleRepository,
+                                  CustomerRepository customerRepository){
         this.reservationRepository = reservationRepository;
         this.vehicleRepository = vehicleRepository;
+        this.customerRepository = customerRepository;
     }
 
     // Everything in this method is one transaction: it is saved completely or not at all
@@ -33,10 +38,11 @@ public class ReservationServiceImpl implements ReservationService{
     @Transactional
     public ReservationDTO createReservation( int customerId, int vehicleId, LocalDate pickupDate, LocalDate returnDate ){
         validateDates(pickupDate, returnDate);
+        Customer customer = findCustomer(customerId);
         Vehicle vehicle = lockVehicle(vehicleId);
         checkVehicleIsFree(vehicle, NO_RESERVATION, pickupDate, returnDate);
 
-        Reservation reservation = new Reservation(customerId, vehicle, pickupDate, returnDate,
+        Reservation reservation = new Reservation(customer, vehicle, pickupDate, returnDate,
                 calculatePrice(vehicle, pickupDate, returnDate));
         return toDTO(reservationRepository.save(reservation));
     }
@@ -58,7 +64,7 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     @Transactional( readOnly = true )
     public List<ReservationDTO> getCustomerReservations( int customerId ){
-        return reservationRepository.findByCustomerIdOrderByPickupDateDesc(customerId).stream()
+        return reservationRepository.findByCustomer_IdOrderByPickupDateDesc(customerId).stream()
                 .map(this::toDTO)
                 .toList();
     }
@@ -125,6 +131,12 @@ public class ReservationServiceImpl implements ReservationService{
         reservation.setStatus(ReservationStatus.COMPLETED);
         reservation.getVehicle().setStatus(VehicleStatus.AVAILABLE);
         return toDTO(reservationRepository.save(reservation));
+    }
+
+    // Only customers can have reservations, an employee id is not found here
+    private Customer findCustomer( int customerId ){
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoSuchElementException("Customer " + customerId + " not found"));
     }
 
     private Vehicle lockVehicle( int vehicleId ){

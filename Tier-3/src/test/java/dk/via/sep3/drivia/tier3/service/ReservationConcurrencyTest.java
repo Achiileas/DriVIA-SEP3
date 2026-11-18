@@ -1,7 +1,9 @@
 package dk.via.sep3.drivia.tier3.service;
 
+import dk.via.sep3.drivia.tier3.entity.Customer;
 import dk.via.sep3.drivia.tier3.entity.Location;
 import dk.via.sep3.drivia.tier3.entity.Vehicle;
+import dk.via.sep3.drivia.tier3.repository.CustomerRepository;
 import dk.via.sep3.drivia.tier3.repository.LocationRepository;
 import dk.via.sep3.drivia.tier3.repository.VehicleRepository;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,9 @@ class ReservationConcurrencyTest {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Test
     void onlyOneOfManySimultaneousBookingsSucceeds() throws InterruptedException {
         Location horsens = locationRepository.save(new Location("Horsens", "Banegaardsgade 2"));
@@ -48,7 +53,8 @@ class ReservationConcurrencyTest {
         Thread[] threads = new Thread[CUSTOMERS];
 
         for (int i = 0; i < CUSTOMERS; i++) {
-            int customerId = i + 1;
+            int customerId = customerRepository.save(
+                    new Customer("Customer " + i, "customer" + i + "@mail.dk", "secret1", "1234567" + i)).getId();
             threads[i] = new Thread(() -> {
                 try {
                     start.await();

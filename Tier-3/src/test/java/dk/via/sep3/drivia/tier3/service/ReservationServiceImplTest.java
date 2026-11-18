@@ -1,6 +1,8 @@
 package dk.via.sep3.drivia.tier3.service;
 
 import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
+import dk.via.sep3.drivia.tier3.entity.Customer;
+import dk.via.sep3.drivia.tier3.repository.CustomerRepository;
 import dk.via.sep3.drivia.tier3.entity.Location;
 import dk.via.sep3.drivia.tier3.entity.Reservation;
 import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -43,13 +46,22 @@ class ReservationServiceImplTest {
     @Mock
     private VehicleRepository vehicleRepository;
 
+    @Mock
+    private CustomerRepository customerRepository;
+
     private ReservationServiceImpl reservationService;
+    private Customer customer;
     private Vehicle vehicle;
 
     @BeforeEach
     void setUp() {
         // The repositories are injected through the constructor, so mocks can be passed in
-        reservationService = new ReservationServiceImpl(reservationRepository, vehicleRepository);
+        reservationService = new ReservationServiceImpl(reservationRepository, vehicleRepository, customerRepository);
+
+        customer = new Customer("Anna", "anna@mail.dk", "secret1", "12345678");
+        ReflectionTestUtils.setField(customer, "id", 7);
+        // lenient: tests that stop before the customer is looked up do not use this
+        lenient().when(customerRepository.findById(7)).thenReturn(Optional.of(customer));
 
         Location horsens = new Location("Horsens", "Banegaardsgade 2");
         ReflectionTestUtils.setField(horsens, "id", 1);
@@ -67,7 +79,7 @@ class ReservationServiceImplTest {
     }
 
     private Reservation reservationWithStatus(ReservationStatus status, LocalDate pickupDate) {
-        Reservation reservation = new Reservation(7, vehicle, pickupDate, pickupDate.plusDays(2), 700);
+        Reservation reservation = new Reservation(customer, vehicle, pickupDate, pickupDate.plusDays(2), 700);
         ReflectionTestUtils.setField(reservation, "id", 5);
         reservation.setStatus(status);
         return reservation;
@@ -85,7 +97,7 @@ class ReservationServiceImplTest {
 
     @Test
     void customerWithNoReservationsGetsEmptyList() {
-        when(reservationRepository.findByCustomerIdOrderByPickupDateDesc(7)).thenReturn(List.of());
+        when(reservationRepository.findByCustomer_IdOrderByPickupDateDesc(7)).thenReturn(List.of());
 
         assertTrue(reservationService.getCustomerReservations(7).isEmpty());
     }
@@ -210,6 +222,15 @@ class ReservationServiceImplTest {
     }
 
     // ---------- E: Exceptions ----------
+
+    @Test
+    void unknownCustomerThrowsNotFound() {
+        when(customerRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class,
+                () -> reservationService.createReservation(99, 1, TODAY.plusDays(1), TODAY.plusDays(2)));
+        verifyNoInteractions(vehicleRepository);
+    }
 
     @Test
     void unknownVehicleThrowsNotFound() {

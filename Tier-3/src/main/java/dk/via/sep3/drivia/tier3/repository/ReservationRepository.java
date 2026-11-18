@@ -12,7 +12,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     List<Reservation> findAllByOrderByPickupDateDesc();
 
-    List<Reservation> findByCustomerIdOrderByPickupDateDesc(int customerId);
+    List<Reservation> findByCustomer_IdOrderByPickupDateDesc(int customerId);
 
     boolean existsByVehicleIdAndStatusIn(int vehicleId, Collection<ReservationStatus> statuses);
 

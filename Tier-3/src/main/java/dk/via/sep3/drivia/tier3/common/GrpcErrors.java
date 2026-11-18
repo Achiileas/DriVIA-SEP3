@@ -16,6 +16,8 @@ public class GrpcErrors{
             status = Status.NOT_FOUND;
         } else if (e instanceof IllegalArgumentException || e instanceof DateTimeException) {
             status = Status.INVALID_ARGUMENT;
+        } else if (e instanceof SecurityException) {
+            status = Status.UNAUTHENTICATED;
         } else if (e instanceof IllegalStateException) {
             status = Status.FAILED_PRECONDITION;
         } else {
