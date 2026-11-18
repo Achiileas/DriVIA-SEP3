@@ -1,8 +1,8 @@
-package dk.via.sep3.drivia.tier2.dto;
+package dk.via.sep3.drivia.tier2.dto.response;
 
 import java.time.LocalDate;
 
-public record CarResponse(
+public record VehicleResponse(
         int id,
         String registrationNo,
         String model,

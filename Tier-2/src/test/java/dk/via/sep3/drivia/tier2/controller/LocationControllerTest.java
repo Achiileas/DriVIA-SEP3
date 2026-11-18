@@ -1,6 +1,6 @@
 package dk.via.sep3.drivia.tier2.controller;
 
-import dk.via.sep3.drivia.tier2.dto.LocationResponse;
+import dk.via.sep3.drivia.tier2.dto.response.LocationResponse;
 import dk.via.sep3.drivia.tier2.service.LocationService;
 
 import io.grpc.Status;

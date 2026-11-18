@@ -1,7 +1,7 @@
 package dk.via.sep3.drivia.tier2.service;
 
 import dk.via.sep3.drivia.grpc.*;
-import dk.via.sep3.drivia.tier2.dto.LocationResponse;
+import dk.via.sep3.drivia.tier2.dto.response.LocationResponse;
 
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;

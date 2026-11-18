@@ -4,7 +4,7 @@ import dk.via.sep3.drivia.grpc.GetAllLocationsRequest;
 import dk.via.sep3.drivia.grpc.Location;
 import dk.via.sep3.drivia.grpc.LocationIdRequest;
 import dk.via.sep3.drivia.grpc.LocationServiceGrpc;
-import dk.via.sep3.drivia.tier2.dto.LocationResponse;
+import dk.via.sep3.drivia.tier2.dto.response.LocationResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

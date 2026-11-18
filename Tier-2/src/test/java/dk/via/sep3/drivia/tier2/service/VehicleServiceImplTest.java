@@ -1,7 +1,7 @@
 package dk.via.sep3.drivia.tier2.service;
 
 import dk.via.sep3.drivia.grpc.*;
-import dk.via.sep3.drivia.tier2.dto.CarResponse;
+import dk.via.sep3.drivia.tier2.dto.response.VehicleResponse;
 
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -20,16 +20,17 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CarServiceImplTest {
+class VehicleServiceImplTest
+{
 
     @Mock
     private VehicleServiceGrpc.VehicleServiceBlockingStub vehicleStub;
 
-    private CarServiceImpl carService;
+    private VehicleServiceImpl vehicleService;
 
     @BeforeEach
     void setUp() {
-        carService = new CarServiceImpl(vehicleStub);
+        vehicleService = new VehicleServiceImpl(vehicleStub);
     }
 
     // Helper method
@@ -51,24 +52,24 @@ class CarServiceImplTest {
 
     // Z - Zero
     @Test
-    void getAllCarsReturnsEmptyListWhenNoCarsExist() {
+    void getAllVehiclesReturnsEmptyListWhenNoVehiclesExist() {
         when(vehicleStub.getAllVehicles(any(GetAllVehiclesRequest.class)))
                 .thenReturn(VehicleList.newBuilder().build());
 
-        List<CarResponse> result = carService.getAllCars();
+        List<VehicleResponse> result = vehicleService.getAllVehicles();
 
         assertTrue(result.isEmpty());
     }
 
     // O - One
     @Test
-    void getCarByIdReturnsOneCar() {
+    void getVehicleByIdReturnsOneVehicle() {
         Vehicle vehicle = createVehicle(1, "Toyota Corolla");
 
         when(vehicleStub.getVehicle(any(VehicleIdRequest.class)))
                 .thenReturn(vehicle);
 
-        CarResponse result = carService.getCarById(1);
+        VehicleResponse result = vehicleService.getVehicleById(1);
 
         assertEquals(1, result.id());
         assertEquals("Toyota Corolla", result.model());
@@ -77,7 +78,7 @@ class CarServiceImplTest {
 
     // M - Many
     @Test
-    void getAllCarsReturnsMultipleCars() {
+    void getAllVehiclesReturnsMultipleVehicles() {
         VehicleList vehicles = VehicleList.newBuilder()
                 .addVehicles(createVehicle(1, "Toyota Corolla"))
                 .addVehicles(createVehicle(2, "BMW X5"))
@@ -87,7 +88,7 @@ class CarServiceImplTest {
         when(vehicleStub.getAllVehicles(any(GetAllVehiclesRequest.class)))
                 .thenReturn(vehicles);
 
-        List<CarResponse> result = carService.getAllCars();
+        List<VehicleResponse> result = vehicleService.getAllVehicles();
 
         assertEquals(3, result.size());
         assertEquals("Toyota Corolla", result.get(0).model());
@@ -97,11 +98,11 @@ class CarServiceImplTest {
 
     // B - Boundary
     @Test
-    void searchCarsConvertsNullFiltersToEmptyStrings() {
+    void searchVehiclesConvertsNullFiltersToEmptyStrings() {
         when(vehicleStub.searchVehicles(any(SearchVehiclesRequest.class)))
                 .thenReturn(VehicleList.newBuilder().build());
 
-        carService.searchCars(null, null, null, 0);
+        vehicleService.searchVehicles(null, null, null, 0);
 
         verify(vehicleStub).searchVehicles(argThat(request ->
                 request.getModel().isEmpty()
@@ -113,14 +114,14 @@ class CarServiceImplTest {
 
     // I - Interface
     @Test
-    void getAvailableCarsSendsCorrectRequestToGrpc() {
+    void getAvailableVehiclesSendsCorrectRequestToGrpc() {
         LocalDate pickup = LocalDate.of(2026, 12, 1);
         LocalDate returnDate = LocalDate.of(2026, 12, 5);
 
         when(vehicleStub.getAvailableVehicles(any(AvailabilityRequest.class)))
                 .thenReturn(VehicleList.newBuilder().build());
 
-        carService.getAvailableCars(1, pickup, returnDate);
+        vehicleService.getAvailableVehicles(1, pickup, returnDate);
 
         verify(vehicleStub).getAvailableVehicles(argThat(request ->
                 request.getLocationId() == 1
@@ -131,17 +132,17 @@ class CarServiceImplTest {
 
     // E - Exceptions
     @Test
-    void getAllCarsPropagatesGrpcException() {
+    void getAllVehiclesPropagatesGrpcException() {
         when(vehicleStub.getAllVehicles(any(GetAllVehiclesRequest.class)))
                 .thenThrow(new StatusRuntimeException(Status.UNAVAILABLE));
 
         assertThrows(StatusRuntimeException.class,
-                () -> carService.getAllCars());
+                () -> vehicleService.getAllVehicles());
     }
 
     // S - Simple scenarios
     @Test
-    void searchCarsReturnsMatchingCars() {
+    void searchVehiclesReturnsMatchingVehicles() {
         VehicleList vehicles = VehicleList.newBuilder()
                 .addVehicles(createVehicle(1, "Toyota Corolla"))
                 .build();
@@ -149,8 +150,8 @@ class CarServiceImplTest {
         when(vehicleStub.searchVehicles(any(SearchVehiclesRequest.class)))
                 .thenReturn(vehicles);
 
-        List<CarResponse> result =
-                carService.searchCars("Toyota", "SUV", "Automatic", 1);
+        List<VehicleResponse> result =
+                vehicleService.searchVehicles("Toyota", "SUV", "Automatic", 1);
 
         assertEquals(1, result.size());
         assertEquals("Toyota Corolla", result.get(0).model());

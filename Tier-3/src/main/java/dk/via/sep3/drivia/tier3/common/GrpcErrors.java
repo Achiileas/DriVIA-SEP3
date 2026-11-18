@@ -19,7 +19,11 @@ public class GrpcErrors{
         } else if (e instanceof SecurityException) {
             status = Status.UNAUTHENTICATED;
         } else if (e instanceof IllegalStateException) {
-            status = Status.FAILED_PRECONDITION;
+            if (e.getMessage() != null && e.getMessage().contains("already exists")) {
+                status = Status.ALREADY_EXISTS;
+            } else {
+                status = Status.FAILED_PRECONDITION;
+            }
         } else {
             status = Status.INTERNAL;
         }
