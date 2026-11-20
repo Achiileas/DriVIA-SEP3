@@ -70,6 +70,70 @@ public class ReservationServiceImpl implements ReservationService {
         return toResponse(reservation);
     }
 
+    @Override
+    public ReservationResponse createReservation(
+        int customerId,
+        int vehicleId,
+        LocalDate pickupDate,
+        LocalDate returnDate) {
+
+        Reservation reservation = reservationStub.createReservation(
+            CreateReservationRequest.newBuilder()
+                .setCustomerId(customerId)
+                .setVehicleId(vehicleId)
+                .setPickupDate(pickupDate.toString())
+                .setReturnDate(returnDate.toString())
+                .build()
+        );
+
+        return toResponse(reservation);
+    }
+
+    @Override
+    public List<ReservationResponse> getCustomerReservations(int customerId) {
+        return reservationStub
+            .getCustomerReservations(
+                CustomerIdRequest.newBuilder()
+                    .setCustomerId(customerId)
+                    .build()
+            )
+            .getReservationsList()
+            .stream()
+            .map(this::toResponse)
+            .toList();
+    }
+
+    @Override
+    public ReservationResponse modifyReservation(
+        int id,
+        int vehicleId,
+        LocalDate pickupDate,
+        LocalDate returnDate) {
+
+        Reservation reservation = reservationStub.modifyReservation(
+            ModifyReservationRequest.newBuilder()
+                .setId(id)
+                .setVehicleId(vehicleId)
+                .setPickupDate(pickupDate.toString())
+                .setReturnDate(returnDate.toString())
+                .build()
+        );
+
+        return toResponse(reservation);
+    }
+
+    @Override
+    public ReservationResponse cancelReservation(int id) {
+        Reservation reservation = reservationStub.cancelReservation(
+            ReservationIdRequest.newBuilder()
+                .setId(id)
+                .build()
+        );
+
+        return toResponse(reservation);
+    }
+
+
     private ReservationResponse toResponse(Reservation reservation) {
         return new ReservationResponse(
                 reservation.getId(),
