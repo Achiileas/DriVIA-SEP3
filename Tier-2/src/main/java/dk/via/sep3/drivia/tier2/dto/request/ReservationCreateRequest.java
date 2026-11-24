@@ -1,11 +1,11 @@
 
 package dk.via.sep3.drivia.tier2.dto.request;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record ReservationCreateRequest(
     int customerId,
     int vehicleId,
-    LocalDate pickupDate,
-    LocalDate returnDate
+    LocalDateTime pickupDate,
+    LocalDateTime returnDate
 ) {}

@@ -1,6 +1,6 @@
 package dk.via.sep3.drivia.tier2.dto.response;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record ReservationResponse(
         int id,
@@ -9,8 +9,8 @@ public record ReservationResponse(
         String vehicleModel,
         int locationId,
         String locationName,
-        LocalDate pickupDate,
-        LocalDate returnDate,
+        LocalDateTime pickupDate,
+        LocalDateTime returnDate,
         String status,
         int totalPrice
 

@@ -11,8 +11,8 @@ import dk.via.sep3.drivia.tier3.entity.VehicleStatus;
 import dk.via.sep3.drivia.tier3.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -21,6 +21,8 @@ public class ReservationServiceImpl implements ReservationService{
 
     // Used as excludeId when there is no existing reservation to skip . Make it int
     private static final int NO_RESERVATION = 0;
+
+    private static final long MINUTES_PER_DAY = 24 * 60;
 
     private final ReservationRepository reservationRepository;
     private final VehicleRepository vehicleRepository;
@@ -36,7 +38,7 @@ public class ReservationServiceImpl implements ReservationService{
     // Everything in this method is one transaction: it is saved completely or not at all
     @Override
     @Transactional
-    public ReservationDTO createReservation( int customerId, int vehicleId, LocalDate pickupDate, LocalDate returnDate ){
+    public ReservationDTO createReservation( int customerId, int vehicleId, LocalDateTime pickupDate, LocalDateTime returnDate ){
         validateDates(pickupDate, returnDate);
         Customer customer = findCustomer(customerId);
         Vehicle vehicle = lockVehicle(vehicleId);
@@ -71,7 +73,7 @@ public class ReservationServiceImpl implements ReservationService{
 
     @Override
     @Transactional
-    public ReservationDTO modifyReservation( int id, int vehicleId, LocalDate pickupDate, LocalDate returnDate ){
+    public ReservationDTO modifyReservation( int id, int vehicleId, LocalDateTime pickupDate, LocalDateTime returnDate ){
         Reservation reservation = findReservation(id);
         if ( reservation.getStatus() != ReservationStatus.PENDING
                 && reservation.getStatus() != ReservationStatus.APPROVED){
@@ -115,7 +117,7 @@ public class ReservationServiceImpl implements ReservationService{
     public ReservationDTO pickupReservation( int id ){
         Reservation reservation = findReservation(id);
         checkStatus(reservation, ReservationStatus.APPROVED);
-        if ( LocalDate.now().isBefore(reservation.getPickupDate()) ){
+        if ( LocalDateTime.now().isBefore(reservation.getPickupDate()) ){
             throw new IllegalStateException("The car cannot be picked up before " + reservation.getPickupDate());
         }
         reservation.setStatus(ReservationStatus.ACTIVE);
@@ -144,7 +146,7 @@ public class ReservationServiceImpl implements ReservationService{
                 .orElseThrow(() -> new NoSuchElementException("Vehicle " + vehicleId + " not found"));
     }
 
-    private void checkVehicleIsFree( Vehicle vehicle, int excludeId, LocalDate pickupDate, LocalDate returnDate ){
+    private void checkVehicleIsFree( Vehicle vehicle, int excludeId, LocalDateTime pickupDate, LocalDateTime returnDate ){
         if ( !vehicle.canBeReserved() ){
             throw new IllegalStateException("Vehicle " + vehicle.getId() + " cannot be reserved");
         }
@@ -154,12 +156,12 @@ public class ReservationServiceImpl implements ReservationService{
         }
     }
 
-    private void validateDates( LocalDate pickupDate, LocalDate returnDate ){
-        if ( pickupDate.isBefore(LocalDate.now()) ){
-            throw new IllegalArgumentException("Pickup date cannot be in the past");
+    private void validateDates( LocalDateTime pickupDate, LocalDateTime returnDate ){
+        if ( pickupDate.isBefore(LocalDateTime.now()) ){
+            throw new IllegalArgumentException("Pickup time cannot be in the past");
         }
         if ( !returnDate.isAfter(pickupDate) ){
-            throw new IllegalArgumentException("Return date must be after pickup date");
+            throw new IllegalArgumentException("Return time must be after pickup time");
         }
     }
 
@@ -169,8 +171,10 @@ public class ReservationServiceImpl implements ReservationService{
         }
     }
 
-    private int calculatePrice( Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate ){
-        int days = (int) ChronoUnit.DAYS.between(pickupDate, returnDate);
+    // Every started 24 hours costs one day: 24 hours = 1 day, 25 hours = 2 days
+    private int calculatePrice( Vehicle vehicle, LocalDateTime pickupDate, LocalDateTime returnDate ){
+        long minutes = Duration.between(pickupDate, returnDate).toMinutes();
+        int days = (int) ((minutes + MINUTES_PER_DAY - 1) / MINUTES_PER_DAY);
         return days * vehicle.getPricePerDay();
     }
 

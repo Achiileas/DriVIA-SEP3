@@ -35,7 +35,7 @@ CREATE TABLE vehicle( id SERIAL PRIMARY KEY, registration_no VARCHAR(20) NOT NUL
 
 CREATE TABLE reservation( id SERIAL PRIMARY KEY, customer_id INTEGER NOT NULL REFERENCES customer (id),
                           vehicle_id INTEGER NOT NULL REFERENCES vehicle (id), location_id INTEGER NOT NULL REFERENCES location (id),
-                          pickup_date DATE NOT NULL, return_date DATE NOT NULL,
+                          pickup_date TIMESTAMP NOT NULL, return_date TIMESTAMP NOT NULL,
                           status VARCHAR(20) NOT NULL CHECK (status IN ('PENDING', 'APPROVED', 'ACTIVE', 'COMPLETED', 'CANCELLED')),
                           total_price INTEGER NOT NULL CHECK (total_price >= 0),
                           CHECK (return_date > pickup_date)

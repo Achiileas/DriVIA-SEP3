@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -191,8 +192,8 @@ class VehicleServiceImplTest {
 
     @Test
     void availabilityAsksTheRepositoryForTheRightStatuses() {
-        LocalDate pickup = TODAY.plusDays(1);
-        LocalDate returnDate = TODAY.plusDays(3);
+        LocalDateTime pickup = LocalDateTime.now().plusDays(1);
+        LocalDateTime returnDate = LocalDateTime.now().plusDays(3);
         when(locationRepository.findById(1)).thenReturn(Optional.of(horsens));
         when(vehicleRepository.findAvailable(eq(1), eq(pickup), eq(returnDate), any(), any())).thenReturn(List.of());
 
@@ -265,7 +266,7 @@ class VehicleServiceImplTest {
     @Test
     void availabilityWithPickupInThePastIsRefused() {
         assertThrows(IllegalArgumentException.class,
-                () -> vehicleService.getAvailableVehicles(1, TODAY.minusDays(1), TODAY.plusDays(1)));
+                () -> vehicleService.getAvailableVehicles(1, LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1)));
     }
 
     // ---------- S: Simple scenarios ----------

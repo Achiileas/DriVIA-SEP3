@@ -12,7 +12,7 @@ import dk.via.sep3.drivia.tier3.dto.ReservationDTO;
 import dk.via.sep3.drivia.tier3.service.ReservationService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static dk.via.sep3.drivia.tier3.common.GrpcErrors.toGrpcError;
@@ -32,8 +32,8 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
             ReservationDTO dto = reservationService.createReservation(
                     request.getCustomerId(),
                     request.getVehicleId(),
-                    LocalDate.parse(request.getPickupDate()),
-                    LocalDate.parse(request.getReturnDate()));
+                    LocalDateTime.parse(request.getPickupDate()),
+                    LocalDateTime.parse(request.getReturnDate()));
             responseObserver.onNext(toProto(dto));
             responseObserver.onCompleted();
         } catch (Exception e) {
@@ -77,8 +77,8 @@ public class ReservationGrpcController extends ReservationServiceGrpc.Reservatio
             ReservationDTO dto = reservationService.modifyReservation(
                     request.getId(),
                     request.getVehicleId(),
-                    LocalDate.parse(request.getPickupDate()),
-                    LocalDate.parse(request.getReturnDate()));
+                    LocalDateTime.parse(request.getPickupDate()),
+                    LocalDateTime.parse(request.getReturnDate()));
             responseObserver.onNext(toProto(dto));
             responseObserver.onCompleted();
         } catch (Exception e) {

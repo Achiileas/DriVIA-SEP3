@@ -7,7 +7,7 @@ import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +34,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer>{
                   AND r.pickupDate < :returnDate
                   AND r.returnDate > :pickupDate)
           """)
-  List<Vehicle> findAvailable( int locationId, LocalDate pickupDate,
-                              LocalDate returnDate, Collection<VehicleStatus> vehicleStatuses,
+  List<Vehicle> findAvailable( int locationId, LocalDateTime pickupDate,
+                              LocalDateTime returnDate, Collection<VehicleStatus> vehicleStatuses,
                               Collection<ReservationStatus> reservationStatuses );
 
   // Locks the vehicle row until the transaction ends, so two reservations

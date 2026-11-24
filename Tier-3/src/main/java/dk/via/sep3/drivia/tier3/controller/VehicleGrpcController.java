@@ -16,6 +16,7 @@ import dk.via.sep3.drivia.tier3.service.VehicleService;
 import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static dk.via.sep3.drivia.tier3.common.GrpcErrors.toGrpcError;
@@ -69,8 +70,8 @@ public class VehicleGrpcController extends VehicleServiceGrpc.VehicleServiceImpl
         try {
             List<VehicleDTO> vehicles = vehicleService.getAvailableVehicles(
                     request.getLocationId(),
-                    LocalDate.parse(request.getPickupDate()),
-                    LocalDate.parse(request.getReturnDate()));
+                    LocalDateTime.parse(request.getPickupDate()),
+                    LocalDateTime.parse(request.getReturnDate()));
             responseObserver.onNext(toProtoList(vehicles));
             responseObserver.onCompleted();
         } catch (Exception e) {

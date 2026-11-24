@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceImplTest {
 
-    private static final LocalDate TODAY = LocalDate.now();
+    private static final LocalDateTime TODAY = LocalDateTime.now().plusMinutes(10);
 
     @Mock
     private ReservationRepository reservationRepository;
@@ -78,7 +79,7 @@ class ReservationServiceImplTest {
         when(reservationRepository.save(any(Reservation.class))).thenAnswer(call -> call.getArgument(0));
     }
 
-    private Reservation reservationWithStatus(ReservationStatus status, LocalDate pickupDate) {
+    private Reservation reservationWithStatus(ReservationStatus status, LocalDateTime pickupDate) {
         Reservation reservation = new Reservation(customer, vehicle, pickupDate, pickupDate.plusDays(2), 700);
         ReflectionTestUtils.setField(reservation, "id", 5);
         reservation.setStatus(status);
@@ -173,7 +174,7 @@ class ReservationServiceImplTest {
 
     @Test
     void pickupOnThePickupDateWorks() {
-        reservationExists(reservationWithStatus(ReservationStatus.APPROVED, TODAY));
+        reservationExists(reservationWithStatus(ReservationStatus.APPROVED, LocalDateTime.now().minusMinutes(1)));
         saveReturnsArgument();
 
         ReservationDTO result = reservationService.pickupReservation(5);
@@ -197,8 +198,8 @@ class ReservationServiceImplTest {
     @Test
     void createReservationChecksOverlapWithoutExcludingAnyReservation() {
         vehicleCanBeBooked();
-        LocalDate pickup = TODAY.plusDays(1);
-        LocalDate returnDate = TODAY.plusDays(3);
+        LocalDateTime pickup = TODAY.plusDays(1);
+        LocalDateTime returnDate = TODAY.plusDays(3);
 
         reservationService.createReservation(7, 1, pickup, returnDate);
 
@@ -210,8 +211,8 @@ class ReservationServiceImplTest {
     void modifyReservationExcludesItselfFromTheOverlapCheck() {
         reservationExists(reservationWithStatus(ReservationStatus.APPROVED, TODAY.plusDays(1)));
         vehicleCanBeBooked();
-        LocalDate pickup = TODAY.plusDays(2);
-        LocalDate returnDate = TODAY.plusDays(5);
+        LocalDateTime pickup = TODAY.plusDays(2);
+        LocalDateTime returnDate = TODAY.plusDays(5);
 
         ReservationDTO result = reservationService.modifyReservation(5, 1, pickup, returnDate);
 
@@ -314,7 +315,7 @@ class ReservationServiceImplTest {
         vehicleCanBeBooked();
         reservationService.createReservation(7, 1, TODAY, TODAY.plusDays(2));
 
-        Reservation saved = reservationWithStatus(ReservationStatus.PENDING, TODAY);
+        Reservation saved = reservationWithStatus(ReservationStatus.PENDING, LocalDateTime.now().minusMinutes(1));
         reservationExists(saved);
 
         assertEquals(ReservationStatus.APPROVED, reservationService.approveReservation(5).status());

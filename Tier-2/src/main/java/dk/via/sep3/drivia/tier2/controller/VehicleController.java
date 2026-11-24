@@ -11,7 +11,7 @@ import dk.via.sep3.drivia.tier2.dto.request.VehicleCreateRequest;
 import dk.via.sep3.drivia.tier2.dto.request.VehicleUpdateRequest;
 import dk.via.sep3.drivia.tier2.dto.request.VehicleStatusRequest;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -83,8 +83,8 @@ public class VehicleController
   @GetMapping("/available")
   public ResponseEntity<List<VehicleResponse>> getAvailableVehicles(
           @RequestParam int locationId,
-          @RequestParam LocalDate pickupDate,
-          @RequestParam LocalDate returnDate) {
+          @RequestParam LocalDateTime pickupDate,
+          @RequestParam LocalDateTime returnDate) {
 
     try {
       return ResponseEntity.ok(

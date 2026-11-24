@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -50,8 +51,8 @@ class EmployeeReservationControllerTest {
                 "Toyota Corolla",
                 1,
                 "Horsens",
-                LocalDate.of(2026, 12, 1),
-                LocalDate.of(2026, 12, 5),
+                LocalDateTime.of(2026, 12, 1, 10, 0),
+                LocalDateTime.of(2026, 12, 5, 10, 0),
                 status,
                 2000
         );
@@ -122,8 +123,8 @@ class EmployeeReservationControllerTest {
 
         mockMvc.perform(get("/api/employee/reservations/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pickupDate").value("2026-12-01"))
-                .andExpect(jsonPath("$.returnDate").value("2026-12-05"))
+                .andExpect(jsonPath("$.pickupDate").value("2026-12-01T10:00:00"))
+                .andExpect(jsonPath("$.returnDate").value("2026-12-05T10:00:00"))
                 .andExpect(jsonPath("$.totalPrice").value(2000));
     }
 

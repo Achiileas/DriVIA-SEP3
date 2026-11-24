@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,8 +43,8 @@ public class ReservationServiceImplTest {
                 .setVehicleModel("Toyota Corolla")
                 .setLocationId(1)
                 .setLocationName("Horsens")
-                .setPickupDate("2026-12-01")
-                .setReturnDate("2026-12-05")
+                .setPickupDate("2026-12-01T10:00")
+                .setReturnDate("2026-12-05T10:00")
                 .setStatus(status)
                 .setTotalPrice(2000)
                 .build();
@@ -120,8 +121,8 @@ public class ReservationServiceImplTest {
 
         ReservationResponse result = reservationService.getReservation(1);
 
-        assertEquals(LocalDate.of(2026, 12, 1), result.pickupDate());
-        assertEquals(LocalDate.of(2026, 12, 5), result.returnDate());
+        assertEquals(LocalDateTime.of(2026, 12, 1, 10, 0), result.pickupDate());
+        assertEquals(LocalDateTime.of(2026, 12, 5, 10, 0), result.returnDate());
         assertEquals(2000, result.totalPrice());
     }
 

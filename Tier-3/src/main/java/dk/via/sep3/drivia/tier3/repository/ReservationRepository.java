@@ -4,7 +4,7 @@ import dk.via.sep3.drivia.tier3.entity.Reservation;
 import dk.via.sep3.drivia.tier3.entity.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             """)
     boolean existsOverlapping(int vehicleId,
                               int excludeId,
-                              LocalDate pickupDate,
-                              LocalDate returnDate,
+                              LocalDateTime pickupDate,
+                              LocalDateTime returnDate,
                               Collection<ReservationStatus> statuses);
 }

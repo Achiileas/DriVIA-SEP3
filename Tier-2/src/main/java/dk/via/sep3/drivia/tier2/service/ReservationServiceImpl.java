@@ -4,7 +4,7 @@ import dk.via.sep3.drivia.grpc.*;
 import dk.via.sep3.drivia.tier2.dto.response.ReservationResponse;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -74,8 +74,8 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationResponse createReservation(
         int customerId,
         int vehicleId,
-        LocalDate pickupDate,
-        LocalDate returnDate) {
+        LocalDateTime pickupDate,
+        LocalDateTime returnDate) {
 
         Reservation reservation = reservationStub.createReservation(
             CreateReservationRequest.newBuilder()
@@ -107,8 +107,8 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationResponse modifyReservation(
         int id,
         int vehicleId,
-        LocalDate pickupDate,
-        LocalDate returnDate) {
+        LocalDateTime pickupDate,
+        LocalDateTime returnDate) {
 
         Reservation reservation = reservationStub.modifyReservation(
             ModifyReservationRequest.newBuilder()
@@ -142,8 +142,8 @@ public class ReservationServiceImpl implements ReservationService {
                 reservation.getVehicleModel(),
                 reservation.getLocationId(),
                 reservation.getLocationName(),
-                LocalDate.parse(reservation.getPickupDate()),
-                LocalDate.parse(reservation.getReturnDate()),
+                LocalDateTime.parse(reservation.getPickupDate()),
+                LocalDateTime.parse(reservation.getReturnDate()),
                 reservation.getStatus(),
                 reservation.getTotalPrice()
         );

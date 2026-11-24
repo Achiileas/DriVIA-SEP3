@@ -17,7 +17,7 @@ service ReservationService {
   rpc ReturnReservation (ReservationIdRequest) returns (Reservation);            // PB-23
 }
 
-// Dates are strings in the format yyyy-MM-dd
+// Pickup and return are strings with date and time: yyyy-MM-ddTHH:mm, e.g. 2026-12-01T17:00
 message Reservation {
   int32 id = 1; int32 customer_id = 2; int32 vehicle_id = 3; string vehicle_model = 4;
   int32 location_id = 5; string location_name = 6; string pickup_date = 7; string return_date = 8;

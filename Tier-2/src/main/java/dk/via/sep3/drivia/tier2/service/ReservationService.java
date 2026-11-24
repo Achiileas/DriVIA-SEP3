@@ -2,7 +2,7 @@ package dk.via.sep3.drivia.tier2.service;
 
 import dk.via.sep3.drivia.tier2.dto.response.ReservationResponse;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationService {
@@ -22,8 +22,8 @@ public interface ReservationService {
     ReservationResponse createReservation(
         int customerId,
         int vehicleId,
-        LocalDate pickupDate,
-        LocalDate returnDate
+        LocalDateTime pickupDate,
+        LocalDateTime returnDate
     );
 
     List<ReservationResponse> getCustomerReservations(int customerId);
@@ -31,8 +31,8 @@ public interface ReservationService {
     ReservationResponse modifyReservation(
         int id,
         int vehicleId,
-        LocalDate pickupDate,
-        LocalDate returnDate
+        LocalDateTime pickupDate,
+        LocalDateTime returnDate
     );
 
     ReservationResponse cancelReservation(int id);

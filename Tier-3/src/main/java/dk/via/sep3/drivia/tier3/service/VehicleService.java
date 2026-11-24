@@ -2,7 +2,7 @@ package dk.via.sep3.drivia.tier3.service;
 
 import dk.via.sep3.drivia.tier3.dto.VehicleDTO;
 import dk.via.sep3.drivia.tier3.entity.VehicleStatus;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VehicleService {
@@ -14,7 +14,7 @@ public interface VehicleService {
     // null text or locationId 0 means "no filter"
     List<VehicleDTO> searchVehicles( String model, String category, String gearbox, int locationId );
 
-    List<VehicleDTO> getAvailableVehicles( int locationId, LocalDate pickupDate, LocalDate returnDate );
+    List<VehicleDTO> getAvailableVehicles( int locationId, LocalDateTime pickupDate, LocalDateTime returnDate );
 
     VehicleDTO addVehicle( VehicleDTO vehicle );
 

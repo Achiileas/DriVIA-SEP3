@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,8 +116,8 @@ class VehicleServiceImplTest
     // I - Interface
     @Test
     void getAvailableVehiclesSendsCorrectRequestToGrpc() {
-        LocalDate pickup = LocalDate.of(2026, 12, 1);
-        LocalDate returnDate = LocalDate.of(2026, 12, 5);
+        LocalDateTime pickup = LocalDateTime.of(2026, 12, 1, 10, 0);
+        LocalDateTime returnDate = LocalDateTime.of(2026, 12, 5, 10, 0);
 
         when(vehicleStub.getAvailableVehicles(any(AvailabilityRequest.class)))
                 .thenReturn(VehicleList.newBuilder().build());
@@ -125,8 +126,8 @@ class VehicleServiceImplTest
 
         verify(vehicleStub).getAvailableVehicles(argThat(request ->
                 request.getLocationId() == 1
-                        && request.getPickupDate().equals("2026-12-01")
-                        && request.getReturnDate().equals("2026-12-05")
+                        && request.getPickupDate().equals("2026-12-01T10:00")
+                        && request.getReturnDate().equals("2026-12-05T10:00")
         ));
     }
 

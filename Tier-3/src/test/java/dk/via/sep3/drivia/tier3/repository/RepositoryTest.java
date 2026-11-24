@@ -16,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 class RepositoryTest {
 
-    private static final LocalDate DAY = LocalDate.now().plusDays(20);
+    private static final LocalDateTime DAY = LocalDate.now().plusDays(20).atTime(10, 0);
 
     @Autowired
     private LocationRepository locationRepository;
@@ -70,13 +71,13 @@ class RepositoryTest {
         anna = customerRepository.save(new Customer("Anna", "anna@mail.dk", "secret1", "12345678"));
     }
 
-    private Reservation book(Vehicle vehicle, LocalDate pickup, LocalDate returnDate, ReservationStatus status) {
+    private Reservation book(Vehicle vehicle, LocalDateTime pickup, LocalDateTime returnDate, ReservationStatus status) {
         Reservation reservation = new Reservation(anna, vehicle, pickup, returnDate, 700);
         reservation.setStatus(status);
         return reservationRepository.save(reservation);
     }
 
-    private boolean overlaps(Vehicle vehicle, int excludeId, LocalDate pickup, LocalDate returnDate) {
+    private boolean overlaps(Vehicle vehicle, int excludeId, LocalDateTime pickup, LocalDateTime returnDate) {
         return reservationRepository.existsOverlapping(vehicle.getId(), excludeId, pickup, returnDate,
                 ReservationStatus.BLOCKING);
     }

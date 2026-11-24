@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table( name = "reservation" )
@@ -32,8 +32,8 @@ public class Reservation{
     @JoinColumn( name = "location_id" )
     private Location location;
 
-    private LocalDate pickupDate;
-    private LocalDate returnDate;
+    private LocalDateTime pickupDate;
+    private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
@@ -44,7 +44,7 @@ public class Reservation{
     protected Reservation(){
     }
 
-    public Reservation( Customer customer, Vehicle vehicle, LocalDate pickupDate, LocalDate returnDate, int totalPrice ){
+    public Reservation( Customer customer, Vehicle vehicle, LocalDateTime pickupDate, LocalDateTime returnDate, int totalPrice ){
         this.customer = customer;
         this.vehicle = vehicle;
         this.location = vehicle.getLocation();
@@ -79,19 +79,19 @@ public class Reservation{
         return location;
     }
 
-    public LocalDate getPickupDate() {
+    public LocalDateTime getPickupDate() {
         return pickupDate;
     }
 
-    public void setPickupDate(LocalDate pickupDate) {
+    public void setPickupDate(LocalDateTime pickupDate) {
         this.pickupDate = pickupDate;
     }
 
-    public LocalDate getReturnDate() {
+    public LocalDateTime getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
     }
 

@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -132,16 +133,16 @@ class VehicleControllerTest {
 
     @Test
     void getAvailableVehiclesPassesParametersToService() throws Exception {
-        LocalDate pickup = LocalDate.of(2026, 12, 1);
-        LocalDate returnDate = LocalDate.of(2026, 12, 5);
+        LocalDateTime pickup = LocalDateTime.of(2026, 12, 1, 10, 0);
+        LocalDateTime returnDate = LocalDateTime.of(2026, 12, 5, 10, 0);
 
         when(vehicleService.getAvailableVehicles(1, pickup, returnDate))
             .thenReturn(List.of(createCar(1, "Toyota Corolla")));
 
         mockMvc.perform(get("/api/vehicles/available")
                 .param("locationId", "1")
-                .param("pickupDate", "2026-12-01")
-                .param("returnDate", "2026-12-05"))
+                .param("pickupDate", "2026-12-01T10:00")
+                .param("returnDate", "2026-12-05T10:00"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(1));
 
@@ -544,16 +545,16 @@ class VehicleControllerTest {
     void getAvailableVehiclesReturnsBadRequestWhenDatesAreInvalid()
         throws Exception {
 
-        LocalDate pickup = LocalDate.of(2026, 12, 5);
-        LocalDate returnDate = LocalDate.of(2026, 12, 1);
+        LocalDateTime pickup = LocalDateTime.of(2026, 12, 5, 10, 0);
+        LocalDateTime returnDate = LocalDateTime.of(2026, 12, 1, 10, 0);
 
         when(vehicleService.getAvailableVehicles(1, pickup, returnDate))
             .thenThrow(new StatusRuntimeException(Status.INVALID_ARGUMENT));
 
         mockMvc.perform(get("/api/vehicles/available")
                 .param("locationId", "1")
-                .param("pickupDate", "2026-12-05")
-                .param("returnDate", "2026-12-01"))
+                .param("pickupDate", "2026-12-05T10:00")
+                .param("returnDate", "2026-12-01T10:00"))
             .andExpect(status().isBadRequest());
     }
 

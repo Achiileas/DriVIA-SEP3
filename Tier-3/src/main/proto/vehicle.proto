@@ -37,6 +37,7 @@ message VehicleIdRequest { int32 id = 1; }
 // Empty string or 0 means "no filter"
 message SearchVehiclesRequest { string model = 1; string category = 2; string gearbox = 3; int32 location_id = 4; }
 
+// pickup_date and return_date: yyyy-MM-ddTHH:mm
 message AvailabilityRequest { int32 location_id = 1; string pickup_date = 2; string return_date = 3; }
 
 message AddVehicleRequest {

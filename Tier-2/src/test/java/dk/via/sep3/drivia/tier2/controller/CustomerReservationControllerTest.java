@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -53,8 +54,8 @@ class CustomerReservationControllerTest {
         "Toyota Corolla",
         1,
         "Horsens",
-        LocalDate.of(2026, 12, 1),
-        LocalDate.of(2026, 12, 5),
+        LocalDateTime.of(2026, 12, 1, 10, 0),
+        LocalDateTime.of(2026, 12, 5, 10, 0),
         status,
         2000
     );
@@ -127,8 +128,8 @@ class CustomerReservationControllerTest {
 
     mockMvc.perform(get("/api/customer/reservations/1"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.pickupDate").value("2026-12-01"))
-        .andExpect(jsonPath("$.returnDate").value("2026-12-05"))
+        .andExpect(jsonPath("$.pickupDate").value("2026-12-01T10:00:00"))
+        .andExpect(jsonPath("$.returnDate").value("2026-12-05T10:00:00"))
         .andExpect(jsonPath("$.totalPrice").value(2000));
   }
 
@@ -138,8 +139,8 @@ class CustomerReservationControllerTest {
     when(reservationService.createReservation(
         1,
         2,
-        LocalDate.of(2026, 12, 1),
-        LocalDate.of(2026, 12, 5)
+        LocalDateTime.of(2026, 12, 1, 10, 0),
+        LocalDateTime.of(2026, 12, 5, 10, 0)
     )).thenReturn(createReservation(1, "PENDING"));
 
     mockMvc.perform(post("/api/customer/reservations")
@@ -148,8 +149,8 @@ class CustomerReservationControllerTest {
                                 {
                                     "customerId": 1,
                                     "vehicleId": 2,
-                                    "pickupDate": "2026-12-01",
-                                    "returnDate": "2026-12-05"
+                                    "pickupDate": "2026-12-01T10:00",
+                                    "returnDate": "2026-12-05T10:00"
                                 }
                                 """))
         .andExpect(status().isCreated())
@@ -159,8 +160,8 @@ class CustomerReservationControllerTest {
     verify(reservationService).createReservation(
         1,
         2,
-        LocalDate.of(2026, 12, 1),
-        LocalDate.of(2026, 12, 5)
+        LocalDateTime.of(2026, 12, 1, 10, 0),
+        LocalDateTime.of(2026, 12, 5, 10, 0)
     );
   }
 
@@ -169,8 +170,8 @@ class CustomerReservationControllerTest {
     when(reservationService.modifyReservation(
         1,
         3,
-        LocalDate.of(2026, 12, 2),
-        LocalDate.of(2026, 12, 6)
+        LocalDateTime.of(2026, 12, 2, 10, 0),
+        LocalDateTime.of(2026, 12, 6, 10, 0)
     )).thenReturn(createReservation(1, "PENDING"));
 
     mockMvc.perform(put("/api/customer/reservations/1")
@@ -178,8 +179,8 @@ class CustomerReservationControllerTest {
             .content("""
                                 {
                                     "vehicleId": 3,
-                                    "pickupDate": "2026-12-02",
-                                    "returnDate": "2026-12-06"
+                                    "pickupDate": "2026-12-02T10:00",
+                                    "returnDate": "2026-12-06T10:00"
                                 }
                                 """))
         .andExpect(status().isOk())
@@ -189,8 +190,8 @@ class CustomerReservationControllerTest {
     verify(reservationService).modifyReservation(
         1,
         3,
-        LocalDate.of(2026, 12, 2),
-        LocalDate.of(2026, 12, 6)
+        LocalDateTime.of(2026, 12, 2, 10, 0),
+        LocalDateTime.of(2026, 12, 6, 10, 0)
     );
   }
 
@@ -227,8 +228,8 @@ class CustomerReservationControllerTest {
     when(reservationService.createReservation(
         1,
         2,
-        LocalDate.of(2026, 12, 1),
-        LocalDate.of(2026, 12, 5)
+        LocalDateTime.of(2026, 12, 1, 10, 0),
+        LocalDateTime.of(2026, 12, 5, 10, 0)
     )).thenThrow(new StatusRuntimeException(Status.INVALID_ARGUMENT));
 
     mockMvc.perform(post("/api/customer/reservations")
@@ -237,8 +238,8 @@ class CustomerReservationControllerTest {
                                 {
                                     "customerId": 1,
                                     "vehicleId": 2,
-                                    "pickupDate": "2026-12-01",
-                                    "returnDate": "2026-12-05"
+                                    "pickupDate": "2026-12-01T10:00",
+                                    "returnDate": "2026-12-05T10:00"
                                 }
                                 """))
         .andExpect(status().isBadRequest());
@@ -251,8 +252,8 @@ class CustomerReservationControllerTest {
     when(reservationService.modifyReservation(
         1,
         3,
-        LocalDate.of(2026, 12, 2),
-        LocalDate.of(2026, 12, 6)
+        LocalDateTime.of(2026, 12, 2, 10, 0),
+        LocalDateTime.of(2026, 12, 6, 10, 0)
     )).thenThrow(new StatusRuntimeException(Status.FAILED_PRECONDITION));
 
     mockMvc.perform(put("/api/customer/reservations/1")
@@ -260,8 +261,8 @@ class CustomerReservationControllerTest {
             .content("""
                                 {
                                     "vehicleId": 3,
-                                    "pickupDate": "2026-12-02",
-                                    "returnDate": "2026-12-06"
+                                    "pickupDate": "2026-12-02T10:00",
+                                    "returnDate": "2026-12-06T10:00"
                                 }
                                 """))
         .andExpect(status().isConflict());

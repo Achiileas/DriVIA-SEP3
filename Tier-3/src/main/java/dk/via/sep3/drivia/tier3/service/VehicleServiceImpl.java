@@ -11,6 +11,7 @@ import dk.via.sep3.drivia.tier3.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -56,12 +57,12 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     @Transactional( readOnly = true )
-    public List<VehicleDTO> getAvailableVehicles( int locationId, LocalDate pickupDate, LocalDate returnDate ){
-        if ( pickupDate.isBefore(LocalDate.now()) ){
-            throw new IllegalArgumentException("Pickup date cannot be in the past");
+    public List<VehicleDTO> getAvailableVehicles( int locationId, LocalDateTime pickupDate, LocalDateTime returnDate ){
+        if ( pickupDate.isBefore(LocalDateTime.now()) ){
+            throw new IllegalArgumentException("Pickup time cannot be in the past");
         }
         if ( !returnDate.isAfter(pickupDate) ){
-            throw new IllegalArgumentException("Return date must be after pickup date");
+            throw new IllegalArgumentException("Return time must be after pickup time");
         }
         findLocation(locationId);
         return vehicleRepository.findAvailable(locationId, pickupDate, returnDate,

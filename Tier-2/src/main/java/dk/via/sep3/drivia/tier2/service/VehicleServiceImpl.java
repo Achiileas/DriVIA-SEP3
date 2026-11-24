@@ -7,6 +7,7 @@ import dk.via.sep3.drivia.tier2.dto.request.VehicleCreateRequest;
 import dk.via.sep3.drivia.tier2.dto.request.VehicleUpdateRequest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -61,8 +62,8 @@ public class VehicleServiceImpl implements VehicleService
     @Override
     public List<VehicleResponse> getAvailableVehicles(
             int locationId,
-            LocalDate pickupDate,
-            LocalDate returnDate) {
+            LocalDateTime pickupDate,
+            LocalDateTime returnDate) {
 
         return vehicleStub.getAvailableVehicles(
                         AvailabilityRequest.newBuilder()

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +45,7 @@ class ReservationConcurrencyTest {
         Location horsens = locationRepository.save(new Location("Horsens", "Banegaardsgade 2"));
         Vehicle golf = vehicleRepository.save(new Vehicle("CD12345", "VW Golf", LocalDate.of(2022, 6, 1), 130,
                 "Compact", "Manual", 450, horsens));
-        LocalDate pickup = LocalDate.now().plusDays(10);
+        LocalDateTime pickup = LocalDate.now().plusDays(10).atTime(10, 0);
 
         CountDownLatch start = new CountDownLatch(1);
         AtomicInteger succeeded = new AtomicInteger();

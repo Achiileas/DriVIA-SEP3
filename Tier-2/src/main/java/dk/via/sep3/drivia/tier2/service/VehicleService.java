@@ -5,7 +5,7 @@ import dk.via.sep3.drivia.tier2.dto.request.VehicleCreateRequest;
 import dk.via.sep3.drivia.tier2.dto.request.VehicleUpdateRequest;
 import dk.via.sep3.drivia.tier2.dto.response.VehicleResponse;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VehicleService {
@@ -23,8 +23,8 @@ public interface VehicleService {
 
   List<VehicleResponse> getAvailableVehicles(
       int locationId,
-      LocalDate pickupDate,
-      LocalDate returnDate
+      LocalDateTime pickupDate,
+      LocalDateTime returnDate
   );
 
   VehicleResponse addVehicle(VehicleCreateRequest request);
