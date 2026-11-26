@@ -6,15 +6,15 @@ option java_multiple_files = true;
 option java_package = "dk.via.sep3.drivia.grpc";
 
 service ReservationService {
-  rpc CreateReservation (CreateReservationRequest) returns (Reservation);        // PB-18, PB-19
+  rpc CreateReservation (CreateReservationRequest) returns (Reservation);
   rpc GetReservation (ReservationIdRequest) returns (Reservation);
   rpc GetAllReservations (GetAllReservationsRequest) returns (ReservationList);  // PB-21 employee
   rpc GetCustomerReservations (CustomerIdRequest) returns (ReservationList);     // PB-20 customer
-  rpc ModifyReservation (ModifyReservationRequest) returns (Reservation);        // PB-24
-  rpc CancelReservation (ReservationIdRequest) returns (Reservation);            // PB-25
-  rpc ApproveReservation (ReservationIdRequest) returns (Reservation);           // PB-21
-  rpc PickupReservation (ReservationIdRequest) returns (Reservation);            // PB-22
-  rpc ReturnReservation (ReservationIdRequest) returns (Reservation);            // PB-23
+  rpc ModifyReservation (ModifyReservationRequest) returns (Reservation);
+  rpc CancelReservation (ReservationIdRequest) returns (Reservation);
+  rpc ApproveReservation (ReservationIdRequest) returns (Reservation);
+  rpc PickupReservation (ReservationIdRequest) returns (Reservation);
+  rpc ReturnReservation (ReservationIdRequest) returns (Reservation);
 }
 
 // Pickup and return are strings with date and time: yyyy-MM-ddTHH:mm, e.g. 2026-12-01T17:00
