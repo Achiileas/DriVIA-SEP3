@@ -26,14 +26,17 @@ public interface ReservationService {
         LocalDateTime returnDate
     );
 
+    ReservationResponse getCustomerReservation(int id, int customerId);
+
     List<ReservationResponse> getCustomerReservations(int customerId);
 
     ReservationResponse modifyReservation(
         int id,
+        int customerId,
         int vehicleId,
         LocalDateTime pickupDate,
         LocalDateTime returnDate
     );
 
-    ReservationResponse cancelReservation(int id);
+    ReservationResponse cancelCustomerReservation(int id, int customerId);
 }

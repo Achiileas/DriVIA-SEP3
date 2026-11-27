@@ -8,6 +8,7 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -17,8 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,9 +45,27 @@ class CustomerReservationControllerTest {
     CustomerReservationController controller =
         new CustomerReservationController(reservationService);
 
+    Jwt jwt = Jwt.withTokenValue("test-token")
+        .header("alg", "none")
+        .claim("userId", 1)
+        .claim("role", "CUSTOMER")
+        .build();
+
+    SecurityContextHolder.getContext().setAuthentication(
+        new JwtAuthenticationToken(jwt)
+    );
+
     mockMvc = MockMvcBuilders
         .standaloneSetup(controller)
+        .setCustomArgumentResolvers(
+            new AuthenticationPrincipalArgumentResolver()
+        )
         .build();
+  }
+
+  @AfterEach
+  void tearDown() {
+    SecurityContextHolder.clearContext();
   }
 
   // Helper method
@@ -57,7 +80,7 @@ class CustomerReservationControllerTest {
         LocalDateTime.of(2026, 12, 1, 10, 0),
         LocalDateTime.of(2026, 12, 5, 10, 0),
         status,
-        2000
+        new BigDecimal("2000.00")
     );
   }
 
@@ -66,8 +89,7 @@ class CustomerReservationControllerTest {
   void getCustomerReservationsReturnsEmptyList() throws Exception {
     when(reservationService.getCustomerReservations(1)).thenReturn(List.of());
 
-    mockMvc.perform(get("/api/customer/reservations")
-            .param("customerId", "1"))
+    mockMvc.perform(get("/api/customer/reservations"))
         .andExpect(status().isOk())
         .andExpect(content().json("[]"));
 
@@ -77,7 +99,7 @@ class CustomerReservationControllerTest {
   // O - One
   @Test
   void getReservationReturnsOneReservation() throws Exception {
-    when(reservationService.getReservation(1))
+    when(reservationService.getCustomerReservation(1, 1))
         .thenReturn(createReservation(1, "PENDING"));
 
     mockMvc.perform(get("/api/customer/reservations/1"))
@@ -86,7 +108,7 @@ class CustomerReservationControllerTest {
         .andExpect(jsonPath("$.vehicleModel").value("Toyota Corolla"))
         .andExpect(jsonPath("$.status").value("PENDING"));
 
-    verify(reservationService).getReservation(1);
+    verify(reservationService).getCustomerReservation(1, 1);
   }
 
   // M - Many
@@ -98,8 +120,7 @@ class CustomerReservationControllerTest {
         createReservation(3, "COMPLETED")
     ));
 
-    mockMvc.perform(get("/api/customer/reservations")
-            .param("customerId", "1"))
+    mockMvc.perform(get("/api/customer/reservations"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.length()").value(3))
         .andExpect(jsonPath("$[0].status").value("PENDING"))
@@ -110,20 +131,20 @@ class CustomerReservationControllerTest {
   // B - Boundary
   @Test
   void getReservationPassesCorrectIdToService() throws Exception {
-    when(reservationService.getReservation(999))
+    when(reservationService.getCustomerReservation(999, 1))
         .thenReturn(createReservation(999, "PENDING"));
 
     mockMvc.perform(get("/api/customer/reservations/999"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(999));
 
-    verify(reservationService).getReservation(999);
+    verify(reservationService).getCustomerReservation(999, 1);
   }
 
   // I - Interface
   @Test
   void getReservationReturnsCorrectDatesAndPrice() throws Exception {
-    when(reservationService.getReservation(1))
+    when(reservationService.getCustomerReservation(1, 1))
         .thenReturn(createReservation(1, "PENDING"));
 
     mockMvc.perform(get("/api/customer/reservations/1"))
@@ -147,7 +168,6 @@ class CustomerReservationControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                                 {
-                                    "customerId": 1,
                                     "vehicleId": 2,
                                     "pickupDate": "2026-12-01T10:00",
                                     "returnDate": "2026-12-05T10:00"
@@ -169,6 +189,7 @@ class CustomerReservationControllerTest {
   void modifyReservationReturnsUpdatedReservation() throws Exception {
     when(reservationService.modifyReservation(
         1,
+        1,
         3,
         LocalDateTime.of(2026, 12, 2, 10, 0),
         LocalDateTime.of(2026, 12, 6, 10, 0)
@@ -189,6 +210,7 @@ class CustomerReservationControllerTest {
 
     verify(reservationService).modifyReservation(
         1,
+        1,
         3,
         LocalDateTime.of(2026, 12, 2, 10, 0),
         LocalDateTime.of(2026, 12, 6, 10, 0)
@@ -197,7 +219,7 @@ class CustomerReservationControllerTest {
 
   @Test
   void cancelReservationReturnsCancelledReservation() throws Exception {
-    when(reservationService.cancelReservation(1))
+    when(reservationService.cancelCustomerReservation(1, 1))
         .thenReturn(createReservation(1, "CANCELLED"));
 
     mockMvc.perform(put("/api/customer/reservations/1/cancel"))
@@ -205,7 +227,7 @@ class CustomerReservationControllerTest {
         .andExpect(jsonPath("$.id").value(1))
         .andExpect(jsonPath("$.status").value("CANCELLED"));
 
-    verify(reservationService).cancelReservation(1);
+    verify(reservationService).cancelCustomerReservation(1, 1);
   }
 
   // E - Exceptions
@@ -214,7 +236,7 @@ class CustomerReservationControllerTest {
   void getReservationReturnsNotFoundWhenReservationDoesNotExist()
       throws Exception {
 
-    when(reservationService.getReservation(999))
+    when(reservationService.getCustomerReservation(999, 1))
         .thenThrow(new StatusRuntimeException(Status.NOT_FOUND));
 
     mockMvc.perform(get("/api/customer/reservations/999"))
@@ -236,7 +258,6 @@ class CustomerReservationControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                                 {
-                                    "customerId": 1,
                                     "vehicleId": 2,
                                     "pickupDate": "2026-12-01T10:00",
                                     "returnDate": "2026-12-05T10:00"
@@ -250,6 +271,7 @@ class CustomerReservationControllerTest {
       throws Exception {
 
     when(reservationService.modifyReservation(
+        1,
         1,
         3,
         LocalDateTime.of(2026, 12, 2, 10, 0),
@@ -272,7 +294,7 @@ class CustomerReservationControllerTest {
   void cancelReservationReturnsConflictWhenReservationCannotBeCancelled()
       throws Exception {
 
-    when(reservationService.cancelReservation(1))
+    when(reservationService.cancelCustomerReservation(1, 1))
         .thenThrow(new StatusRuntimeException(Status.FAILED_PRECONDITION));
 
     mockMvc.perform(put("/api/customer/reservations/1/cancel"))
@@ -286,8 +308,7 @@ class CustomerReservationControllerTest {
     when(reservationService.getCustomerReservations(1))
         .thenThrow(new StatusRuntimeException(Status.UNAVAILABLE));
 
-    mockMvc.perform(get("/api/customer/reservations")
-            .param("customerId", "1"))
+    mockMvc.perform(get("/api/customer/reservations"))
         .andExpect(status().isServiceUnavailable());
   }
 
@@ -295,7 +316,7 @@ class CustomerReservationControllerTest {
   void getReservationReturnsInternalServerErrorForUnexpectedException()
       throws Exception {
 
-    when(reservationService.getReservation(1))
+    when(reservationService.getCustomerReservation(1, 1))
         .thenThrow(new StatusRuntimeException(Status.INTERNAL));
 
     mockMvc.perform(get("/api/customer/reservations/1"))

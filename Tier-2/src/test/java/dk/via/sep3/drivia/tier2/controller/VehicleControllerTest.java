@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -56,7 +57,7 @@ class VehicleControllerTest {
             150,
             "SUV",
             "Automatic",
-            500,
+            new BigDecimal("500.00"),
             "AVAILABLE",
             1,
             "Horsens"
@@ -194,7 +195,7 @@ class VehicleControllerTest {
             150,
             "SUV",
             "Automatic",
-            500,
+            new BigDecimal("500.00"),
             1
         );
 
@@ -211,7 +212,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -239,7 +240,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -263,7 +264,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -287,7 +288,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -304,7 +305,7 @@ class VehicleControllerTest {
             150,
             "SUV",
             "Automatic",
-            500,
+            new BigDecimal("500.00"),
             1
         );
 
@@ -321,7 +322,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -351,7 +352,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -377,7 +378,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -403,7 +404,7 @@ class VehicleControllerTest {
                         "horsepower": 150,
                         "category": "SUV",
                         "gearbox": "Automatic",
-                        "pricePerDay": 500,
+                        "pricePerDay": 500.00,
                         "locationId": 1
                     }
                     """))
@@ -577,7 +578,7 @@ class VehicleControllerTest {
                     "horsepower": 150,
                     "category": "SUV",
                     "gearbox": "Automatic",
-                    "pricePerDay": 500,
+                    "pricePerDay": 500.00,
                     "locationId": 1
                 }
                 """))

@@ -44,7 +44,7 @@ class VehicleServiceImplTest
                 .setHorsepower(150)
                 .setCategory("SUV")
                 .setGearbox("Automatic")
-                .setPricePerDay(500)
+                .setPricePerDay("500.00")
                 .setStatus("AVAILABLE")
                 .setLocationId(1)
                 .setLocationName("Horsens")

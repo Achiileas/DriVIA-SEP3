@@ -11,6 +11,8 @@ import io.grpc.StatusRuntimeException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,10 +29,13 @@ public class CustomerReservationController {
 
   @PostMapping
   public ResponseEntity<ReservationResponse> createReservation(
+      @AuthenticationPrincipal Jwt jwt,
       @RequestBody ReservationCreateRequest request) {
 
+    int customerId = getCustomerId(jwt);
+
     ReservationResponse reservation = reservationService.createReservation(
-        request.customerId(),
+        customerId,
         request.vehicleId(),
         request.pickupDate(),
         request.returnDate()
@@ -41,23 +46,34 @@ public class CustomerReservationController {
 
   @GetMapping
   public List<ReservationResponse> getCustomerReservations(
-      @RequestParam int customerId) {
+      @AuthenticationPrincipal Jwt jwt) {
+
+    int customerId = getCustomerId(jwt);
 
     return reservationService.getCustomerReservations(customerId);
   }
 
   @GetMapping("/{id}")
-  public ReservationResponse getReservation(@PathVariable int id) {
-    return reservationService.getReservation(id);
+  public ReservationResponse getReservation(
+      @PathVariable int id,
+      @AuthenticationPrincipal Jwt jwt) {
+
+    int customerId = getCustomerId(jwt);
+
+    return reservationService.getCustomerReservation(id, customerId);
   }
 
   @PutMapping("/{id}")
   public ReservationResponse modifyReservation(
       @PathVariable int id,
+      @AuthenticationPrincipal Jwt jwt,
       @RequestBody ReservationUpdateRequest request) {
+
+    int customerId = getCustomerId(jwt);
 
     return reservationService.modifyReservation(
         id,
+        customerId,
         request.vehicleId(),
         request.pickupDate(),
         request.returnDate()
@@ -65,8 +81,18 @@ public class CustomerReservationController {
   }
 
   @PutMapping("/{id}/cancel")
-  public ReservationResponse cancelReservation(@PathVariable int id) {
-    return reservationService.cancelReservation(id);
+  public ReservationResponse cancelReservation(
+      @PathVariable int id,
+      @AuthenticationPrincipal Jwt jwt) {
+
+    int customerId = getCustomerId(jwt);
+
+    return reservationService.cancelCustomerReservation(id, customerId);
+  }
+
+  private int getCustomerId(Jwt jwt) {
+    Number userId = jwt.getClaim("userId");
+    return userId.intValue();
   }
 
   // Handle gRPC exceptions
@@ -80,6 +106,8 @@ public class CustomerReservationController {
       case INVALID_ARGUMENT -> HttpStatus.BAD_REQUEST;
       case ALREADY_EXISTS, FAILED_PRECONDITION -> HttpStatus.CONFLICT;
       case UNAVAILABLE -> HttpStatus.SERVICE_UNAVAILABLE;
+      case UNAUTHENTICATED -> HttpStatus.UNAUTHORIZED;
+      case PERMISSION_DENIED -> HttpStatus.FORBIDDEN;
       default -> HttpStatus.INTERNAL_SERVER_ERROR;
     };
 

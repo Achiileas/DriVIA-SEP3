@@ -1,5 +1,6 @@
 package dk.via.sep3.drivia.tier2.dto.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record VehicleResponse(
@@ -10,7 +11,7 @@ public record VehicleResponse(
         int horsepower,
         String category,
         String gearbox,
-        int pricePerDay,
+        BigDecimal pricePerDay,
         String status,
         int locationId,
         String locationName

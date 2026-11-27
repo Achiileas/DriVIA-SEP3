@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class ReservationServiceImplTest {
                 .setPickupDate("2026-12-01T10:00")
                 .setReturnDate("2026-12-05T10:00")
                 .setStatus(status)
-                .setTotalPrice(2000)
+                .setTotalPrice("2000")
                 .build();
     }
 
@@ -123,7 +123,7 @@ public class ReservationServiceImplTest {
 
         assertEquals(LocalDateTime.of(2026, 12, 1, 10, 0), result.pickupDate());
         assertEquals(LocalDateTime.of(2026, 12, 5, 10, 0), result.returnDate());
-        assertEquals(2000, result.totalPrice());
+        assertEquals(new BigDecimal("2000"), result.totalPrice());
     }
 
     // E - Exceptions

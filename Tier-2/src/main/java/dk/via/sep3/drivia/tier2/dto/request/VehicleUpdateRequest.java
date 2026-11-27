@@ -1,5 +1,6 @@
 package dk.via.sep3.drivia.tier2.dto.request;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record VehicleUpdateRequest(
@@ -9,6 +10,7 @@ public record VehicleUpdateRequest(
     int horsepower,
     String category,
     String gearbox,
-    int pricePerDay,
+    BigDecimal pricePerDay,
     int locationId
-) {}
+) {
+}

@@ -3,6 +3,7 @@ package dk.via.sep3.drivia.tier2.config;
 import dk.via.sep3.drivia.grpc.LocationServiceGrpc;
 import dk.via.sep3.drivia.grpc.ReservationServiceGrpc;
 import dk.via.sep3.drivia.grpc.VehicleServiceGrpc;
+import dk.via.sep3.drivia.grpc.UserServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,5 +42,11 @@ public class GrpcClientConfig{
     public ReservationServiceGrpc.ReservationServiceBlockingStub reservationStub(
             ManagedChannel tier3Channel) {
         return ReservationServiceGrpc.newBlockingStub(tier3Channel);
+    }
+
+    @Bean
+    public UserServiceGrpc.UserServiceBlockingStub userStub(
+        ManagedChannel tier3Channel) {
+        return UserServiceGrpc.newBlockingStub(tier3Channel);
     }
 }
